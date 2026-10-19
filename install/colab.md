@@ -79,7 +79,7 @@ Colab 会话结束后 `/content` 全部清空。用 Drive 保存需要保留的�
 | --- | --- | --- |
 | 输出图 | 小 | 放 Drive |
 | LoRA | 每个 ≤608MB | 放 Drive（Civitai 需手动下载后上传） |
-| 底模 | 约 16GB | 免费 Drive 只有 15GB，装不下；默认每次从 HF 重下 |
+| 底模 | 约 16GB | 默认缓存到 Drive（需账号空间足够）；免费 15GB 装不下，请用 `--no-cache-base` / 把 notebook 开关设为 False，每次从 HF 重下 |
 
 ```python
 from google.colab import drive
@@ -91,7 +91,29 @@ drive.mount("/content/drive")
 - 目录约定：`MyDrive/qwen21_pose/{loras,models,outputs}`。
 - 有足够 Drive 空间时，可以缓存底模，下次会话直接复制，比下载更稳。
 
-以上流程已写成 notebook：[`notebooks/colab_t4.ipynb`](../notebooks/colab_t4.ipynb)，在 Colab 里「文件 → 打开笔记本 → GitHub」选本仓库即可。
+以上流程已写成两个 notebook，在 Colab 里「文件 → 打开笔记本 → GitHub」选本仓库即可：
+
+- [`notebooks/colab_t4_quick.ipynb`](../notebooks/colab_t4_quick.ipynb)：**一键版**（3 个 cell），调用 `scripts/colab_quickstart.py`。
+- [`notebooks/colab_t4.ipynb`](../notebooks/colab_t4.ipynb)：分步版，便于逐步排错。
+
+### 一键脚本 `scripts/colab_quickstart.py`
+
+`drive.mount` 只能在 notebook 里调用，所以先挂载，再运行脚本：
+
+```python
+from google.colab import drive; drive.mount("/content/drive")
+```
+
+```bash
+python scripts/colab_quickstart.py --steps 20
+# 首次且 LoRA 不在 Drive：
+python scripts/colab_quickstart.py --lora-url "https://civitai.com/api/download/models/<版本ID>" --civitai-token "<token>"
+```
+
+- 可重复运行：已有文件跳过，ComfyUI 已在运行则复用，再出图只需重跑一次。
+- 主要参数：`--width --height --steps --cfg --seed --prompt/--prompt-file --lora-name --no-cache-base --no-drive --setup-only --update`。
+- 默认 1024×1024、20 步（作者模型页推荐 20 步）。相对 `SKILL.md` 的 50 步配方是降配，交付时需如实标注。
+- 失败时自动打印 ComfyUI 日志末尾 60 行。
 
 ## 8. 建议试跑顺序
 
