@@ -71,7 +71,29 @@ python3 scripts/qwen_pose_test.py --mode t2i --name test \
   --lora-strength 1.0 --out outputs/test.png
 ```
 
-## 7. 建议试跑顺序
+## 7. 使用 Google Drive 持久化
+
+Colab 会话结束后 `/content` 全部清空。用 Drive 保存需要保留的东西：
+
+| 内容 | 大小 | 建议 |
+| --- | --- | --- |
+| 输出图 | 小 | 放 Drive |
+| LoRA | 每个 ≤608MB | 放 Drive（Civitai 需手动下载后上传） |
+| 底模 | 约 16GB | 免费 Drive 只有 15GB，装不下；默认每次从 HF 重下 |
+
+```python
+from google.colab import drive
+drive.mount("/content/drive")
+```
+
+- **不要直接从 Drive 加载模型**（FUSE 读取慢，8.7GB 的文本编码器尤其明显）。先 `shutil.copyfile` 到 `/content/ComfyUI/models/...` 再启动 ComfyUI。
+- 不推荐用符号链接把 `models/` 指向 Drive，原因同上。
+- 目录约定：`MyDrive/qwen21_pose/{loras,models,outputs}`。
+- 有足够 Drive 空间时，可以缓存底模，下次会话直接复制，比下载更稳。
+
+以上流程已写成 notebook：[`notebooks/colab_t4.ipynb`](../notebooks/colab_t4.ipynb)，在 Colab 里「文件 → 打开笔记本 → GitHub」选本仓库即可。
+
+## 8. 建议试跑顺序
 
 1. `doctor.py` 自检。
 2. 512×512、10 步，确认无黑图、无 OOM。
