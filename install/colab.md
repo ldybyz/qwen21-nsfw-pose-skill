@@ -115,6 +115,7 @@ python scripts/colab_quickstart.py --lora-url "https://civitai.com/api/download/
 - 默认 1024×1024、20 步（作者模型页推荐 20 步）。相对 `SKILL.md` 的 50 步配方是降配，交付时需如实标注。
 - 失败时自动打印 ComfyUI 日志末尾 60 行。
 - 支持改已有图：`--mode edit --input <图片> --prompt "<指令>"`。
+- 支持非人物题材预设：`--preset landscape|animal|sticker --prompt "<描述>"`（自动关闭 NSFW LoRA）。示例见 [`notebooks/colab_t4_examples.ipynb`](../notebooks/colab_t4_examples.ipynb)。
 
 出图、写提示词、改图的完整说明见 [colab_usage.md](colab_usage.md)。
 

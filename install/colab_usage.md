@@ -44,7 +44,9 @@ python scripts/colab_quickstart.py \
 | `--steps` | 20 | 越多越慢；项目配方是 50 |
 | `--cfg` | 2.5 | 2.5–4，调高细节更多；CFG 1 会让 LoRA 失效 |
 | `--seed` | 80964 | 换种子得到不同构图；同种子同参数基本复现 |
-| `--lora-name` | femaledVaginus v1.3b | LoRA 文件名；传 `""` 关闭 |
+| `--lora-name` | femaledVaginus v1.3b | LoRA 文件名 |
+| `--no-lora` | 关 | 不用任何 LoRA（非人物题材必开，用 `--preset` 时自动开启） |
+| `--preset` | 无 | `landscape` / `animal` / `sticker`，见 §4.5 |
 | `--lora-strength` | 1.0 | 建议 0.7–1.0 |
 | `--lora-url` `--civitai-token` | 空 | LoRA 不在 Drive 时下载一次并缓存到 Drive |
 | `--skip-doctor` | 关 | 跳过自检，省时间 |
@@ -115,15 +117,76 @@ python scripts/colab_quickstart.py --mode edit \
   需要姿势参考时用无身份特征的 3D 人偶渲染图（路线③④，在 Colab 上不推荐）。
 - 路线④（VNCCS 3D 姿势库）依赖浏览器的 3D 实时捕获，Colab 上成本高，本说明不覆盖。
 
+## 4.5 非人物题材：风景 / 动物 / 表情包
+
+底模 Qwen-Image 2.1 是通用文生图模型，不只会画人；项目里偏向人物的是 NSFW LoRA、作者提示词样例和姿势库。
+画风景、动物等题材时不要用这些 LoRA，否则可能引入不相关的人体特征或质感。
+
+> 非人物题材在 T4 上**未经实测**；表情包里的文字渲染效果也未验证。
+
+### 用预设
+
+```bash
+python scripts/colab_quickstart.py --preset landscape \
+  --prompt "A misty mountain lake at sunrise, pine forest on the shore, golden light, wide angle photograph" \
+  --seed 1 --skip-doctor
+```
+
+| 预设 | 默认画幅 | 适用 |
+| --- | --- | --- |
+| `landscape` | 1024×576（16:9） | 风景 |
+| `animal` | 1024×768（4:3） | 动物 / 宠物 / 野生动物 |
+| `sticker` | 1024×1024 | 表情包 / 贴纸 / 带文字的图 |
+
+使用预设时：
+
+- 自动**关闭 NSFW LoRA**（不会去 Drive 取 LoRA，也不用 LoRA 文件）。
+- **必须自己写提示词**（`--prompt` 或 `--prompt-file`）。默认的样例提示词是作者的人像，预设和 `--no-lora` 下不会再回退到它，缺提示词会直接报错。
+- 显式传 `--width/--height` 会覆盖预设的画幅；预设只对文字出图有效，不能和 `--mode edit` 一起用。
+- 不想用预设时，等价写法是 `--no-lora --width ... --height ... --prompt ...`。
+
+### 提示词怎么写
+
+7 要素和 300–1500 字符的要求是针对 NSFW 人物的，**非人物题材不适用**。写清这几项即可：
+
+- **主体**：是什么、什么状态
+- **环境**：场景、时间、天气
+- **光线**：如晨光、逆光、柔和阴影
+- **镜头与风格**：广角 / 微距、摄影 / 插画 / 矢量
+- 避免英文双引号 `"`（会破坏 shell 命令），需要引号用单引号
+
+### 表情包的局限
+
+- **不支持透明背景**，输出是普通不透明图片。
+- 文字尽量短，并在提示词里明确写出要显示的内容（如 `a sign that says 'OK'`）。
+- 想做同一角色的一套表情，可先出一张角色图，再用改图模式逐个改表情，保真度未验证。
+
+### 改非人物的图
+
+直接用 §4 的改图模式即可，默认就不带 LoRA。例如
+`--prompt "change the background to a snowy forest, keep the animal and its pose unchanged"`。
+
+### 示例 notebook
+
+[`notebooks/colab_t4_examples.ipynb`](../notebooks/colab_t4_examples.ipynb) 提供了风景、动物、表情包、改图、批量换种子的示例，每个 cell 独立可运行。
+
+### 视频
+
+本项目**只做静态图**，没有视频模型、工作流或脚本。视频生成需要另选模型（如 Wan、LTX-Video 等）和独立的
+ComfyUI 工作流，且通常比图像更吃显存和内存；T4 加 12.7GB 内存很可能吃紧（未实测）。建议另开独立 notebook 试验，不要混进本项目。
+
 ## 5. 批量与复现
 
 - 脚本一次只出 1 张。多张请重复运行并**换种子**（`--seed 1`、`--seed 2` …）。
 - 每张图旁边的 `.json` 记录了提示词、种子、步数、LoRA，复现时照抄即可。
-- 在 notebook 里循环多张的示例：
+- 在 notebook 里循环多张的示例（`colab_t4_examples.ipynb` 里有完整版）：
 
 ```python
-for s in (1, 2, 3):
-    !python {POSELAB}/scripts/colab_quickstart.py --seed {s} --skip-doctor --prompt-file ...
+import subprocess
+for seed in (1, 2, 3):
+    subprocess.run(["python", f"{POSELAB}/scripts/colab_quickstart.py",
+                    "--prompt-file", "/content/drive/MyDrive/qwen21_pose/prompts/my.txt",
+                    "--seed", str(seed), "--skip-doctor"])
 ```
 
 ## 6. 速度与资源

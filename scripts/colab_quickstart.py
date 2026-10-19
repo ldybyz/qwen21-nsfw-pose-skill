@@ -12,6 +12,8 @@ called from a plain script):
     !python scripts/colab_quickstart.py --steps 20
     # edit an existing image (route 2):
     !python scripts/colab_quickstart.py --mode edit --input <image> --prompt "<instruction>"
+    # non-person subjects (no NSFW LoRA, preset canvas):
+    !python scripts/colab_quickstart.py --preset landscape --prompt "<scene>"
 
 Drive layout (DRIVE_ROOT/{models,loras,outputs}):
     models/   base-model cache (copied to the local disk before loading)
@@ -43,6 +45,14 @@ BASE_MODELS = [
 ]
 DEFAULT_LORA = "qwen2_1-femaledVaginus-nsfw-v1_3-fine_L22-31.safetensors"
 COMFY_PORT = 8188
+
+# Presets for non-person subjects (t2i only). Each one turns the NSFW LoRA OFF and picks a
+# sensible canvas; an explicit --width/--height/--lora-name still wins. A prompt is required.
+PRESETS = {
+    "landscape": {"width": 1024, "height": 576, "note": "16:9 scenery, no LoRA"},
+    "animal": {"width": 1024, "height": 768, "note": "4:3 animal / pet / wildlife, no LoRA"},
+    "sticker": {"width": 1024, "height": 1024, "note": "square sticker / meme / text-in-image, no LoRA"},
+}
 
 
 def log(msg: str) -> None:
@@ -255,6 +265,7 @@ def parse() -> argparse.Namespace:
     g.add_argument("--lora-name", default=None,
                    help=f"LoRA file in models/loras. Default: {DEFAULT_LORA} for t2i, none for edit. "
                         "Pass '' to disable.")
+    g.add_argument("--no-lora", action="store_true", help="run without any LoRA (same as --lora-name '')")
     g.add_argument("--lora-url", default="", help="download URL if the LoRA is not on Drive yet")
     g.add_argument("--civitai-token", default="", help="or set env CIVITAI_TOKEN")
     g.add_argument("--lora-strength", type=float, default=1.0)
@@ -267,8 +278,12 @@ def parse() -> argparse.Namespace:
                    help="prompt file. Default: prompts/taws_v13_shower.txt for t2i, required for edit "
                         "unless --prompt is given")
     g.add_argument("--negative", default="", help="negative prompt")
-    g.add_argument("--width", type=int, default=1024, help="t2i only")
-    g.add_argument("--height", type=int, default=1024, help="t2i only")
+    g.add_argument("--preset", choices=sorted(PRESETS), default=None,
+                   help="t2i preset for non-person subjects: "
+                        + "; ".join(f"{k} = {v['note']}" for k, v in PRESETS.items())
+                        + ". Turns the NSFW LoRA off; --prompt/--prompt-file is required.")
+    g.add_argument("--width", type=int, default=None, help="t2i only (default 1024, or the preset's)")
+    g.add_argument("--height", type=int, default=None, help="t2i only (default 1024, or the preset's)")
     g.add_argument("--steps", type=int, default=20)
     g.add_argument("--cfg", type=float, default=None, help="default 2.5 for t2i, 3.0 for edit")
     g.add_argument("--seed", type=int, default=80964)
@@ -283,11 +298,25 @@ def parse() -> argparse.Namespace:
 def main() -> int:
     a = parse()
     # mode-dependent defaults (SKILL.md: edit is steadier at cfg 3 and keeps NSFW LoRAs off by default)
+    if a.preset and a.mode != "t2i":
+        die("--preset only applies to --mode t2i")
+    preset = PRESETS.get(a.preset, {})
+    if a.no_lora:
+        a.lora_name = ""
     if a.lora_name is None:
-        a.lora_name = DEFAULT_LORA if a.mode == "t2i" else ""
+        a.lora_name = DEFAULT_LORA if (a.mode == "t2i" and not a.preset) else ""
     if a.cfg is None:
         a.cfg = 2.5 if a.mode == "t2i" else 3.0
-    if a.prompt_file is None and not a.prompt and a.mode == "t2i":
+    if a.width is None:
+        a.width = preset.get("width", 1024)
+    if a.height is None:
+        a.height = preset.get("height", 1024)
+    if a.mode == "t2i" and not a.setup_only and not a.prompt and a.prompt_file is None:
+        # the bundled default prompt is an author NSFW portrait: only fall back to it when
+        # the user did not ask for a non-person setup
+        if a.preset or not a.lora_name:
+            die("no prompt: with --preset or without a LoRA you must pass --prompt \"...\" "
+                "or --prompt-file <file> (the default sample prompt is an author portrait)")
         a.prompt_file = "prompts/taws_v13_shower.txt"
     if a.mode == "edit" and not a.setup_only and not a.input:
         die("--mode edit needs --input <image path>")
