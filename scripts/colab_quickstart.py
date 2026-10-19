@@ -10,11 +10,15 @@ called from a plain script):
 
     from google.colab import drive; drive.mount("/content/drive")
     !python scripts/colab_quickstart.py --steps 20
+    # edit an existing image (route 2):
+    !python scripts/colab_quickstart.py --mode edit --input <image> --prompt "<instruction>"
 
 Drive layout (DRIVE_ROOT/{models,loras,outputs}):
     models/   base-model cache (copied to the local disk before loading)
     loras/    LoRA files (put them here, or pass --lora-url to download once)
     outputs/  generated images + .json metadata
+    inputs/   source images for --mode edit
+    prompts/  your own prompt files (use with --prompt-file)
 
 Only the Python standard library is used. Linux (Colab) only.
 """
@@ -82,7 +86,7 @@ def check_drive(a: argparse.Namespace) -> Path | None:
             "  from google.colab import drive; drive.mount('/content/drive')\n"
             "or pass --no-drive.")
     root = Path(a.drive_root)
-    for d in ("models", "loras", "outputs"):
+    for d in ("models", "loras", "outputs", "inputs", "prompts"):
         (root / d).mkdir(parents=True, exist_ok=True)
     log(f"Drive root: {root}")
     return root
@@ -189,25 +193,43 @@ def start_comfyui(a: argparse.Namespace, comfy: Path, url: str) -> None:
     die(f"ComfyUI did not become ready in 360s. Last log lines:\n{tail(logfile)}")
 
 
-def generate(a: argparse.Namespace, comfy: Path, drive: Path | None, env: dict) -> Path:
+def load_prompt(a: argparse.Namespace) -> str:
     if a.prompt:
-        prompt = a.prompt
-    else:
+        return a.prompt
+    if a.prompt_file:
         pf = Path(a.prompt_file)
         if not pf.is_absolute():
             pf = PKG_DIR / pf
-        prompt = pf.read_text(encoding="utf-8").strip()
+        if not pf.is_file():
+            die(f"prompt file not found: {pf}")
+        return pf.read_text(encoding="utf-8").strip()
+    die("edit mode needs an instruction: pass --prompt \"...\" or --prompt-file <file>")
+    return ""
+
+
+def generate(a: argparse.Namespace, comfy: Path, drive: Path | None, env: dict) -> Path:
+    prompt = load_prompt(a)
     stamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-    out = PKG_DIR / "outputs" / f"colab_{stamp}.png"
+    prefix = "colab_edit" if a.mode == "edit" else "colab"
+    out = PKG_DIR / "outputs" / f"{prefix}_{stamp}.png"
     out.parent.mkdir(parents=True, exist_ok=True)
-    log(f"generating {a.width}x{a.height}, {a.steps} steps, seed {a.seed} ...")
     cmd = [sys.executable, str(PKG_DIR / "scripts" / "qwen_pose_test.py"),
-           "--mode", "t2i", "--name", "colab", "--prompt", prompt,
+           "--mode", a.mode, "--name", prefix, "--prompt", prompt,
            "--seed", str(a.seed), "--steps", str(a.steps), "--cfg", str(a.cfg),
-           "--sampler", "er_sde", "--scheduler", "beta",
-           "--width", str(a.width), "--height", str(a.height),
-           "--lora", a.lora_name, "--lora-strength", str(a.lora_strength),
-           "--out", str(out)]
+           "--sampler", "er_sde", "--scheduler", "beta", "--out", str(out)]
+    if a.negative:
+        cmd += ["--negative", a.negative]
+    if a.mode == "edit":
+        src = Path(a.input).expanduser()
+        if not src.is_file():
+            die(f"input image not found: {src}")
+        log(f"editing {src.name}, {a.steps} steps, cfg {a.cfg}, seed {a.seed} ...")
+        cmd += ["--input", str(src)]
+    else:
+        log(f"generating {a.width}x{a.height}, {a.steps} steps, cfg {a.cfg}, seed {a.seed} ...")
+        cmd += ["--width", str(a.width), "--height", str(a.height)]
+    if a.lora_name:
+        cmd += ["--lora", a.lora_name, "--lora-strength", str(a.lora_strength)]
     r = subprocess.run(cmd, cwd=PKG_DIR, env=env)
     if r.returncode != 0 or not out.exists():
         die(f"generation failed. ComfyUI log tail:\n{tail(comfy / 'comfy.log')}")
@@ -221,7 +243,7 @@ def generate(a: argparse.Namespace, comfy: Path, drive: Path | None, env: dict) 
 
 
 def parse() -> argparse.Namespace:
-    p = argparse.ArgumentParser(description="One-shot Colab setup + T2I generation (re-runnable)")
+    p = argparse.ArgumentParser(description="One-shot Colab setup + T2I / edit generation (re-runnable)")
     g = p.add_argument_group("paths / Drive")
     g.add_argument("--comfy", default="/content/ComfyUI")
     g.add_argument("--drive-root", default="/content/drive/MyDrive/qwen21_pose")
@@ -230,17 +252,25 @@ def parse() -> argparse.Namespace:
                    help="do NOT cache base models (~16GB) on Drive (default: cache them)")
     g.add_argument("--update", action="store_true", help="git pull ComfyUI and reinstall requirements")
     g = p.add_argument_group("LoRA")
-    g.add_argument("--lora-name", default=DEFAULT_LORA)
+    g.add_argument("--lora-name", default=None,
+                   help=f"LoRA file in models/loras. Default: {DEFAULT_LORA} for t2i, none for edit. "
+                        "Pass '' to disable.")
     g.add_argument("--lora-url", default="", help="download URL if the LoRA is not on Drive yet")
     g.add_argument("--civitai-token", default="", help="or set env CIVITAI_TOKEN")
     g.add_argument("--lora-strength", type=float, default=1.0)
     g = p.add_argument_group("generation")
-    g.add_argument("--prompt", default="", help="inline prompt (overrides --prompt-file)")
-    g.add_argument("--prompt-file", default="prompts/taws_v13_shower.txt")
-    g.add_argument("--width", type=int, default=1024)
-    g.add_argument("--height", type=int, default=1024)
+    g.add_argument("--mode", choices=["t2i", "edit"], default="t2i",
+                   help="t2i = text to image; edit = change an existing image (route 2)")
+    g.add_argument("--input", default="", help="source image for --mode edit (e.g. a file on Drive)")
+    g.add_argument("--prompt", default="", help="inline prompt / edit instruction (overrides --prompt-file)")
+    g.add_argument("--prompt-file", default=None,
+                   help="prompt file. Default: prompts/taws_v13_shower.txt for t2i, required for edit "
+                        "unless --prompt is given")
+    g.add_argument("--negative", default="", help="negative prompt")
+    g.add_argument("--width", type=int, default=1024, help="t2i only")
+    g.add_argument("--height", type=int, default=1024, help="t2i only")
     g.add_argument("--steps", type=int, default=20)
-    g.add_argument("--cfg", type=float, default=2.5)
+    g.add_argument("--cfg", type=float, default=None, help="default 2.5 for t2i, 3.0 for edit")
     g.add_argument("--seed", type=int, default=80964)
     g = p.add_argument_group("misc")
     g.add_argument("--comfy-args", default="--lowvram --disable-smart-memory --fp32-vae",
@@ -252,6 +282,15 @@ def parse() -> argparse.Namespace:
 
 def main() -> int:
     a = parse()
+    # mode-dependent defaults (SKILL.md: edit is steadier at cfg 3 and keeps NSFW LoRAs off by default)
+    if a.lora_name is None:
+        a.lora_name = DEFAULT_LORA if a.mode == "t2i" else ""
+    if a.cfg is None:
+        a.cfg = 2.5 if a.mode == "t2i" else 3.0
+    if a.prompt_file is None and not a.prompt and a.mode == "t2i":
+        a.prompt_file = "prompts/taws_v13_shower.txt"
+    if a.mode == "edit" and not a.setup_only and not a.input:
+        die("--mode edit needs --input <image path>")
     url = f"http://127.0.0.1:{COMFY_PORT}"
     env = dict(os.environ, COMFY=a.comfy, POSELAB=str(PKG_DIR), COMFYUI_URL=url,
                COMFYUI_INPUT=f"{a.comfy}/input", COMFYUI_OUTPUT=f"{a.comfy}/output")
@@ -260,7 +299,8 @@ def main() -> int:
     drive = check_drive(a)
     comfy = setup_comfyui(a)
     fetch_base_models(a, comfy, drive)
-    fetch_lora(a, comfy, drive)
+    if a.lora_name:
+        fetch_lora(a, comfy, drive)
     start_comfyui(a, comfy, url)
     if not a.skip_doctor:
         subprocess.run([sys.executable, str(PKG_DIR / "scripts" / "doctor.py")], cwd=PKG_DIR, env=env)

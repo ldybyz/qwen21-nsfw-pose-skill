@@ -51,7 +51,7 @@
 
 ## 快速开始（作者案例跟跑）
 
-前置安装见 [install/setup.md](install/setup.md)。装好后先跑一次自检（只读，不改动任何东西）：
+前置安装见 [install/setup.md](install/setup.md)（Google Colab T4 用户见 [install/colab.md](install/colab.md) 与 [install/colab_usage.md](install/colab_usage.md)）。装好后先跑一次自检（只读，不改动任何东西）：
 
 ```bash
 python3 scripts/doctor.py
