@@ -8,7 +8,24 @@
 
 ## 一、人物卡总览表
 
-### 1. 东亚系 (East Asian) - 目录：[`east_asian/`](east_asian/)
+### 1. 中式全世代与经典古典系 (Chinese Dynasties & Classics) - 目录：[`chinese/`](chinese/)
+
+> 详见专属目录索引：[`characters/chinese/README.md`](chinese/README.md)
+
+| 编号 | 人物中文名 | 英文代号 | 时代/类型分类 | 原型灵感复刻 | 发型发质与容貌体态 | 推荐 LoRA | 推荐场景搭配 | 卡片链接 |
+| :---: | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :---: |
+| **CN-01** | **赵凌燕** | Zhao Lingyan | **汉代宫廷** | 佟丽娅（《母仪天下》赵飞燕） | 汉代垂鬟分髾高盘髻 / 掌上轻舞 / 楚腰纤细 / 丹凤眼 | `femaledVaginus-v1.3` @ 1.0 | 幽篁竹林水阁、汉宫暖阁、拔步床 | [`zhao_lingyan.md`](chinese/zhao_lingyan.md) |
+| **CN-02** | **杨玉瑶** | Yang Yuyao | **盛唐帝国** | 殷桃 / 范冰冰（盛唐杨贵妃） | 唐代高耸巍峨高髻 / 额绘金红牡丹花钿 / 丰腴润泽沙漏曲线 | `femaledVaginus-v1.3` @ 1.0 | 私汤温泉暖池、新中式茶室、金丝软榻 | [`yang_yuyao.md`](chinese/yang_yuyao.md) |
+| **CN-03** | **白曼清** | Bai Manqing | **近代民国** | 张曼玉（《花样年华》）+ 汤唯（《色戒》） | 30年代海派手推波浪卷 / 细眉红唇 / 旗袍衣架子S曲线 | `thesealpacas-nsfw-v2` @ 0.85 | 旗袍暗光酒廊、复古旅馆、镜前自拍 | [`bai_manqing.md`](chinese/bai_manqing.md) |
+| **CN-04** | **杜雯** | Du Wen | **现代高级时尚** | 刘雯 + 杜鹃（顶级东方超模） | 齐肩极简刀切黑直发 / 骨相高级 / 刀刻下颌线 / 直角肩九头身 | `femaledVaginus-v1.3` @ 1.0 | 顶层豪宅落地窗、画室人体、极简棚拍 | [`du_wen.md`](chinese/du_wen.md) |
+| **CN-05** | **热依仙** | Reyixian | **现代明艳顶流** | 迪丽热巴（顶级浓颜神颜） | 丰盈海藻黑长卷发 / 欧亚异域明艳大五官 / 驼峰琼鼻 / 腰臀比尤物 | `thesealpacas-nsfw-v2` @ 0.85 | 奢华游艇日光浴、午夜厨房、全景落地窗 | [`reyixian.md`](chinese/reyixian.md) |
+| **CN-06** | **林潇湘** | Lin Xiaoxiang | **古典文学名著** | 陈晓旭（87版《红楼梦》林黛玉） | 凌虚流云半绾髻饰白玉簪 / 罥烟眉含情目 / 弱柳扶风娇美病态骨感 | `femaledVaginus-v1.3` @ 1.0 | 红木雕花拔步床、潇湘馆竹影、水阁 | [`lin_xiaoxiang.md`](chinese/lin_xiaoxiang.md) |
+| **CN-07** | **龙芷清** | Long Zhiqing | **经典武侠名著** | 刘亦菲 / 李若彤（小龙女神仙姐姐） | 及臀乌发系纯白丝绦 / 不食人间烟火 / 冰肌玉骨 / 冷若霜雪 | `femaledVaginus-v1.3` @ 1.0 | 江南烟雨水阁、幽篁竹林、飞檐月色 | [`long_zhiqing.md`](chinese/long_zhiqing.md) |
+| **CN-08** | **苏魅儿** | Su Mei'er | **古典神话志怪** | 温碧霞 / 娜然（《封神演义》苏妲己） | 慵懒披散海藻波浪卷 / 摄魂狐眸微挑 / 咬唇娇媚 / 水蛇蜂腰 | `thesealpacas-nsfw-v2` @ 0.85 | 古典红木雕花拔步床、私汤温泉、桑拿微汗 | [`su_meier.md`](chinese/su_meier.md) |
+
+---
+
+### 2. 东亚泛系 (East Asian) - 目录：[`east_asian/`](east_asian/)
 
 | 编号 | 人物中文名 | 英文代号 | 人设立绘风格 | 年龄/体型 | 发型与发色 | 推荐 LoRA | 推荐场景搭配 | 卡片链接 |
 | :---: | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :---: |
@@ -19,7 +36,7 @@
 
 ---
 
-### 2. 欧美与高加索系 (Caucasian) - 目录：[`caucasian/`](caucasian/)
+### 3. 欧美与高加索系 (Caucasian) - 目录：[`caucasian/`](caucasian/)
 
 | 编号 | 人物中文名 | 英文代号 | 人设立绘风格 | 年龄/体型 | 发型与发色 | 推荐 LoRA | 推荐场景搭配 | 卡片链接 |
 | :---: | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :---: |

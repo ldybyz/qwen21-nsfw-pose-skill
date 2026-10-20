@@ -66,7 +66,8 @@ def blend_character_into_scene(character_block: str, scene_prompt: str) -> tuple
     # Pattern targeting typical subject phrases in prompts/
     # e.g., "of a graceful young Chinese woman (23 years old)" or "a gorgeous woman"
     subject_patterns = [
-        r"(?:of\s+)?a\s+(?:(?:graceful|stunning|gorgeous|slender|athletic|young|voluptuous|striking|tall|petite|chic|adorable)\s+)*(?:\d+[- ]years?[- ]old\s+)?(?:Chinese|Japanese|Korean|Scandinavian|European|Italian|Slavic|Asian|Caucasian|French)?\s*(?:woman|female|model)(?:\s*\(\d+\s*years\s*old\))?",
+        r"(?:of\s+)?(?:a|an)\s+[^,\.\n]+?\b(?:woman|female|model|lady|maiden)(?:\s*\([^)]+\))?",
+        r"(?:of\s+)?(?:a|an)\s+(?:[a-zA-Z-]+\s+)*(?:woman|female|model|lady|maiden)",
     ]
 
     replaced = False
@@ -76,14 +77,17 @@ def blend_character_into_scene(character_block: str, scene_prompt: str) -> tuple
         if m:
             matched_text = m.group(0)
             prefix = "of " if matched_text.lower().startswith("of ") else ""
-            char_text = character_block
-            # Ensure proper casing/prefix
-            replacement = f"{prefix}{char_text}"
+            char_text = character_block.strip()
+            # If char_text already starts with a/an, handle prefix smoothly
+            if prefix and re.match(r"^(?:a|an)\s+", char_text, flags=re.IGNORECASE):
+                replacement = f"of {char_text}"
+            else:
+                replacement = f"{prefix}{char_text}"
             start, end = m.span()
             merged_prompt = merged_prompt[:start] + replacement + merged_prompt[end:]
             # Clean up accidental double articles if any
-            merged_prompt = re.sub(r"\b(of\s+a\s+)a\b", r"\1", merged_prompt, flags=re.IGNORECASE)
-            merged_prompt = re.sub(r"\b(a\s+)a\b", r"\1", merged_prompt, flags=re.IGNORECASE)
+            merged_prompt = re.sub(r"\b(of\s+)(?:a|an)\s+(a|an)\b", r"\1\2", merged_prompt, flags=re.IGNORECASE)
+            merged_prompt = re.sub(r"\b(a|an)\s+(a|an)\b", r"\1", merged_prompt, flags=re.IGNORECASE)
             replaced = True
             break
 
