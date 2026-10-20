@@ -1,0 +1,22 @@
+# ③ 姿态要素：俯趴挺胯 (L2)
+element: pose
+id: L2_prone_hips_lifted
+name_zh: "俯趴挺胯向镜头"
+name_en: "Prone with Hips Lifted Toward Camera"
+tier: L2
+tags: [prone, bold, rear_facing, hips_lifted, nsfw]
+
+prompt: >-
+  lying prone with hips lifted toward the camera, arms stretched forward
+  resting on the surface, back arched with spine curved,
+
+limb_detail:
+  legs: "legs slightly parted, knees bent, hips elevated"
+  arms: "arms stretched forward, hands flat on the surface"
+  torso: "face-down prone position with lower back arched, hips raised"
+  head: "face turned to one side resting on arms, or looking back over shoulder"
+
+compatibility:
+  best_with_camera: [low_angle_floor, eye_level_medium]
+  best_with_setting: [penthouse_stretch, chinese_canopy_bed, sauna_steam]
+  recommended_lora: "qwen2_1-femaledVaginus-nsfw-v1_3-fine_L22-31.safetensors"

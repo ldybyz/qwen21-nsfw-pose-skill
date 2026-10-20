@@ -1,0 +1,22 @@
+# ③ 姿态要素：跪坐后倾双手后撑 (L1)
+element: pose
+id: L1_kneeling_back_brace
+name_zh: "跪坐后倾双手后撑"
+name_en: "Kneeling Leaning Back with Hands Braced"
+tier: L1
+tags: [kneeling, open, leaning_back, relaxed]
+
+prompt: >-
+  kneeling with her knees slightly parted, leaning her torso slightly back
+  with both hands braced behind her on the surface,
+
+limb_detail:
+  legs: "kneeling on both knees, knees slightly parted and submerged"
+  arms: "both arms behind body, hands braced on the surface for support"
+  torso: "leaning back at a slight angle, chest and stomach open to camera"
+  head: "chin slightly lifted, eyes half-closed or looking away"
+
+compatibility:
+  best_with_camera: [low_angle_floor]
+  best_with_setting: [onsen_hotspring, sauna_steam]
+  recommended_lora: "qwen2_1-femaledVaginus-nsfw-v1_3-fine_L22-31.safetensors"

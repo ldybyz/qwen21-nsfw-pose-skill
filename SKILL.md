@@ -177,11 +177,76 @@ A hyper-realistic, {camera} shot {subject with age/build/hair state},
 moment" atmosphere, photorealistic anatomy.
 ```
 
-**Before writing, load a verified author prompt and rewrite it for your scene** —
-`prompts/*.txt` (+ matching `.params.json`). Writing from scratch is what makes
+### 3.3 Modular Seven-Element System & Workflows (七要素模块化与工作流)
+
+为了避免七要素提示词笼统、便于自由组合与工程化批量出图，仓库已将七要素解耦为独立的 YAML 配置文件，并提供配方组装与工作流批量运行引擎。
+
+#### 目录架构
+
+```text
+prompts/
+├── elements/                 # 七要素模块库
+│   ├── camera/               # ① 镜头/机位 (low_angle_floor, overhead_topdown, etc.)
+│   ├── subject/              # ② 人物主体 (lin_yuting, generic_young_woman, etc.)
+│   ├── pose/                 # ③ 姿态与四肢 (L0-L3 梯度姿势)
+│   ├── setting/              # ④ 场景与光影 (chinese_tearoom, onsen_hotspring, etc.)
+│   ├── skin/                 # ⑤ 皮肤质感 (dewy_porcelain, oily_glisten, etc.)
+│   ├── anatomy/              # ⑥ 解剖与裸露 (full_reveal_explicit, partial_topless, etc.)
+│   └── finish/               # ⑦ 画质后缀 (8k_cinematic, 35mm_film_grain, etc.)
+└── recipes/                  # 预设组合配方 (recipe YAML)
+    ├── chinese_tearoom_lin.yaml
+    ├── vintage_motel_retro.yaml
+    └── cyber_balcony_neon.yaml
+workflows/                    # 批量工作流定义
+├── batch_pose_matrix.yaml    # 姿态矩阵测试 (固定角色/场景，遍历多种姿态)
+├── ab_skin_comparison.yaml   # 皮肤质感 A/B 对比
+└── character_tour.yaml       # 角色巡回 (同一场景遍历多位角色)
+```
+
+#### 使用方式
+
+```bash
+# 1. 配方模式 (Recipe) — 加载已有黄金组合
+python3 scripts/compose_prompt.py --recipe prompts/recipes/chinese_tearoom_lin.yaml
+
+# 2. 自由组合模式 (Elements) — 任意拼装七要素
+python3 scripts/compose_prompt.py \
+  --camera low_angle_floor \
+  --subject lin_yuting \
+  --pose L2_prone_hips_lifted \
+  --setting chinese_tearoom \
+  --skin dewy_porcelain \
+  --anatomy full_reveal_explicit \
+  --finish 8k_cinematic
+
+# 3. 配方覆盖 (Recipe + Override) — 基于成熟配方微调单个要素
+python3 scripts/compose_prompt.py \
+  --recipe prompts/recipes/chinese_tearoom_lin.yaml \
+  --pose L2_cat_stretch --skin oily_glisten
+
+# 4. 兼容性校验 (Check Compatibility) — 检查机位与姿态是否冲突
+python3 scripts/compose_prompt.py --check-compat \
+  --camera overhead_topdown --pose L2_seated_wide_elbows
+
+# 5. 元素浏览 (List)
+python3 scripts/compose_prompt.py --list all
+python3 scripts/compose_prompt.py --list pose --tier L2
+
+# 6. 一键直接出图 (--run)
+python3 scripts/compose_prompt.py \
+  --recipe prompts/recipes/chinese_tearoom_lin.yaml \
+  --run --out outputs/tearoom_lin.png
+
+# 7. 批量工作流引擎 (Batch Workflow)
+python3 scripts/run_batch.py --workflow workflows/batch_pose_matrix.yaml --dry-run
+python3 scripts/run_batch.py --workflow workflows/batch_pose_matrix.yaml --execute
+```
+
+**Before writing, load a verified author prompt or recipe and rewrite it for your scene** —
+`prompts/*.txt` or `prompts/recipes/*.yaml`. Writing from scratch is what makes
 results look generic.
 
-### 3.3 Deviations — tell, don't silently do it
+### 3.4 Deviations — tell, don't silently do it
 
 If the user asks for a shorter prompt, a SFW-generic prompt, "no LoRA", fewer
 steps, or a different sampler — **and** if you (the agent) ever need to deviate
@@ -201,7 +266,7 @@ was changed next to the delivered image. Evidence to cite:
   (L2 + low angle + LoRA) — shows the ladder of how much the full recipe adds.
   It demonstrates the effect but does **not** isolate any single factor.
 
-### 3.4 Known limits of the harness
+### 3.5 Known limits of the harness
 
 - **One LoRA per run.** `qwen_pose_test.py` injects a single `LoraLoaderModelOnly`
   (node id 99) between `UNETLoader` and `KSampler`. Civitai showcase workflows

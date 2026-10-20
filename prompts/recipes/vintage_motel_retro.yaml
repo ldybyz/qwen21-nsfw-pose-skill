@@ -1,0 +1,25 @@
+# 预设配方：复古旅馆·胶片仰卧
+recipe: vintage_motel_retro
+name_zh: "复古旅馆·胶片仰卧大开"
+description: "复古胶片风格旅馆场景，仰卧在皮革沙发上双腿大开"
+
+elements:
+  camera: vintage_film_low
+  subject: generic_young_woman
+  pose: L2_reclining_wide
+  setting: vintage_motel
+  skin: matte_natural
+  anatomy: full_reveal_explicit
+  finish: 35mm_film_grain
+
+params:
+  steps: 45
+  cfg: 4.0
+  sampler: er_sde
+  scheduler: beta
+  seed: 124880844757561
+  size: "1152x1728"
+  lora: "thesealpacas-nsfw-v2.safetensors"
+  lora_strength: 0.8
+
+negative_prompt: "modern digital look, overly smooth plastic skin, 3D render, cartoon, bright sterile lighting, extra limbs, watermark"

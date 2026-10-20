@@ -1,0 +1,22 @@
+# ③ 姿态要素：大开腿前倾肘撑 (L2)
+element: pose
+id: L2_seated_wide_elbows
+name_zh: "大开腿前倾肘撑坐姿"
+name_en: "Wide-Seated Lean Forward on Elbows"
+tier: L2
+tags: [seated, open, bold, frontal, nsfw]
+
+prompt: >-
+  sitting with legs wide open, leaning forward resting on her elbows,
+  her back slightly arched, chin tilted up with a direct gaze,
+
+limb_detail:
+  legs: "legs spread wide apart, inner thighs visible"
+  arms: "both elbows resting on the surface, forearms forward"
+  torso: "torso leaning forward, spine gently curved"
+  head: "chin slightly raised, eyes looking directly at camera"
+
+compatibility:
+  best_with_camera: [low_angle_floor, eye_level_medium]
+  best_with_setting: [vintage_motel, sauna_steam, penthouse_stretch]
+  recommended_lora: "qwen2_1-femaledVaginus-nsfw-v1_3-fine_L22-31.safetensors"

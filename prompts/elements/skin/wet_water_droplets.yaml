@@ -1,0 +1,16 @@
+# ⑤ 皮肤质感：水滴湿润
+element: skin
+id: wet_water_droplets
+name_zh: "水滴湿润皮肤"
+name_en: "Wet Skin with Water Droplets"
+tags: [wet, water, droplets, shower, outdoor]
+
+prompt: >-
+  Her skin is fully wet, water beads rolling down her shoulders and stomach,
+  glistening with wet sheen, moist strands of hair sticking to her neck
+  and collarbone. Realistic skin texture with visible goosebumps and pores.
+
+variants:
+  rain: "Rain droplets and city mist cling to her skin, creating glossy specular reflections across her chest, stomach, and thighs"
+  steam: "Her entire body glistens with heavy perspiration, skin flushed warm and dewy from the steam"
+  pool: "Crystal clear water cascades down her body, skin glistening with clean water droplets"

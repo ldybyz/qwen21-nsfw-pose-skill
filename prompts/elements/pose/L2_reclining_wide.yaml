@@ -1,0 +1,23 @@
+# ③ 姿态要素：仰卧双腿大开搭在两侧 (L2)
+element: pose
+id: L2_reclining_wide
+name_zh: "仰卧双腿大开"
+name_en: "Reclining Wide-Open on Couch/Bed"
+tier: L2
+tags: [reclining, open, bold, wide, nsfw]
+
+prompt: >-
+  reclining on her back with her head resting on one end,
+  both legs lifted and draped wide over the sides,
+  creating a wide and uninhibited open posture,
+
+limb_detail:
+  legs: "legs lifted high, draped wide open over armrest/backrest/sides"
+  arms: "one arm behind head, other resting on stomach or surface"
+  torso: "flat on back, spine following the surface contour"
+  head: "head resting on armrest/pillow, eyes closed or looking at camera"
+
+compatibility:
+  best_with_camera: [low_angle_floor, vintage_film_low]
+  best_with_setting: [vintage_motel, chinese_canopy_bed]
+  recommended_lora: "qwen2_1-femaledVaginus-nsfw-v1_3-fine_L22-31.safetensors"

@@ -1,0 +1,22 @@
+# ④ 场景+光影：复古旅馆
+element: setting
+id: vintage_motel
+name_zh: "复古旅馆·暗红皮革沙发"
+name_en: "Retro Roadside Motel Room"
+tags: [vintage, retro, indoor, warm, 70s, film]
+
+prompt: >-
+  in a dimly lit retro roadside motel room, lounging across a worn
+  deep-red leather couch.
+
+lighting: >-
+  The soft red glow of a neon motel sign outside bleeds through dusty
+  window blinds, painting deep shadows and warm highlights over her body.
+  Authentic film grain, slight motion softness, nostalgic 1970s warm cinema look.
+
+props:
+  - "worn deep-red leather couch"
+  - "dusty window blinds"
+  - "neon motel sign glow"
+
+mood: "nostalgic, intimate, raw, retro"

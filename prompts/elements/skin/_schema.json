@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Skin Element",
+  "description": "皮肤质感要素 — 提示词七要素之 ⑤",
+  "type": "object",
+  "required": ["element", "id", "name_zh", "name_en", "prompt"],
+  "properties": {
+    "element": { "const": "skin" },
+    "id": { "type": "string", "pattern": "^[a-z0-9_]+$" },
+    "name_zh": { "type": "string" },
+    "name_en": { "type": "string" },
+    "tags": { "type": "array", "items": { "type": "string" } },
+    "prompt": { "type": "string", "description": "皮肤质感提示词片段" },
+    "variants": {
+      "type": "object",
+      "additionalProperties": { "type": "string" }
+    }
+  }
+}

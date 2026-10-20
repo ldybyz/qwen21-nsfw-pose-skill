@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Setting Element",
+  "description": "场景+光影要素 — 提示词七要素之 ④",
+  "type": "object",
+  "required": ["element", "id", "name_zh", "name_en", "prompt", "lighting"],
+  "properties": {
+    "element": { "const": "setting" },
+    "id": { "type": "string", "pattern": "^[a-z0-9_]+$" },
+    "name_zh": { "type": "string" },
+    "name_en": { "type": "string" },
+    "tags": { "type": "array", "items": { "type": "string" } },
+    "prompt": { "type": "string", "description": "场景环境描述" },
+    "lighting": { "type": "string", "description": "光影描述" },
+    "props": { "type": "array", "items": { "type": "string" }, "description": "场景道具" },
+    "mood": { "type": "string", "description": "氛围关键词" }
+  }
+}

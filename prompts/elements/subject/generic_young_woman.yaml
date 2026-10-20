@@ -1,0 +1,10 @@
+# ② 主体要素：通用年轻女性（内联）
+element: subject
+id: generic_young_woman
+name_zh: "通用年轻女性"
+name_en: "Generic Young Woman"
+source: inline
+tags: [generic, placeholder]
+
+prompt: >-
+  a young woman (24 years old)

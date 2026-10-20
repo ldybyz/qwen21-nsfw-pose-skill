@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Camera Element",
+  "description": "镜头/视角要素 — 提示词七要素之 ①",
+  "type": "object",
+  "required": ["element", "id", "name_zh", "name_en", "prompt"],
+  "properties": {
+    "element": { "const": "camera" },
+    "id": { "type": "string", "pattern": "^[a-z0-9_]+$" },
+    "name_zh": { "type": "string" },
+    "name_en": { "type": "string" },
+    "tags": { "type": "array", "items": { "type": "string" } },
+    "boldness_boost": { "type": "string", "description": "对 boldness 梯级的影响，如 +1" },
+    "prompt": { "type": "string", "description": "核心提示词片段" },
+    "variants": {
+      "type": "object",
+      "additionalProperties": { "type": "string" }
+    },
+    "compatibility": {
+      "type": "object",
+      "properties": {
+        "best_with_poses": { "type": "array", "items": { "type": "string" } },
+        "avoid_with": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  }
+}

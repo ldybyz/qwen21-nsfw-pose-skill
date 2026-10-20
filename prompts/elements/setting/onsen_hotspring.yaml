@@ -1,0 +1,24 @@
+# ④ 场景+光影：私汤温泉
+element: setting
+id: onsen_hotspring
+name_zh: "私汤温泉·石阶半浸"
+name_en: "Private Outdoor Hot Spring at Dusk"
+tags: [japanese, outdoor, water, warm, dusk, intimate]
+
+prompt: >-
+  resting in a traditional private outdoor hot spring (onsen) at dusk,
+  on smooth dark volcanic stones submerged in warm thermal spring water.
+
+lighting: >-
+  Soft golden lantern light reflects off the steam and water ripples,
+  contrasting with the dark cedar wood and bamboo backdrop.
+  The warm thermal spring water leaves her glistening with wet sheen,
+  water beads rolling down her shoulders and stomach.
+
+props:
+  - "smooth dark volcanic stones"
+  - "cedar wood fence and bamboo plants"
+  - "golden lantern"
+  - "steam rising from hot water"
+
+mood: "serene, warm, natural, private"

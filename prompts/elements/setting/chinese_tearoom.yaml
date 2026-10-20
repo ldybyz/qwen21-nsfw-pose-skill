@@ -1,0 +1,22 @@
+# ④ 场景+光影：新中式茶室
+element: setting
+id: chinese_tearoom
+name_zh: "新中式茶室·屏风茶烟"
+name_en: "Minimalist Chinese Tea Pavilion"
+tags: [chinese_aesthetic, warm, indoor, zen, intimate]
+
+prompt: >-
+  inside an elegant minimalist modern tea pavilion,
+  on a woven tatami floor cushion next to a low black walnut tea table.
+
+lighting: >-
+  Warm diffuse light shines through a translucent rice-paper wooden lattice
+  screen behind her, casting subtle bamboo shadows and outlining her silhouette.
+  Gentle swirls of tea steam rise into the air.
+
+props:
+  - "steaming purple clay teapot on the tea tray"
+  - "woven tatami floor cushion"
+  - "rice-paper wooden lattice screen"
+
+mood: "tranquil, intimate, classical Chinese"

@@ -1,0 +1,11 @@
+# ⑥ 解剖/裸露：着装暗示 (L0)
+element: anatomy
+id: clothed_suggestive
+name_zh: "着装·若隐若现"
+name_en: "Clothed with Suggestive Elements"
+tags: [clothed, suggestive, L0, editorial]
+tier: L0
+
+prompt: >-
+  She wears a thin, slightly transparent outfit that hints at her figure
+  beneath. The fabric clings to her body, outlining her natural curves.

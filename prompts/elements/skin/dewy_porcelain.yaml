@@ -1,0 +1,15 @@
+# ⑤ 皮肤质感：瓷白露水肌
+element: skin
+id: dewy_porcelain
+name_zh: "瓷白露水通透肌"
+name_en: "Dewy Porcelain Skin"
+tags: [porcelain, dewy, east_asian, luminous, clean]
+
+prompt: >-
+  Her skin is luminous porcelain fair with a natural dewy sheen, authentic
+  skin texture with visible fine pores and soft subsurface scattering,
+  subtle specular highlights along her collarbones and shoulders.
+
+variants:
+  minimal: "realistic skin texture with visible pores, natural porcelain complexion"
+  detailed: "authentic human skin texture with microscopic pores, luminous porcelain fair tone, soft glowing subsurface scattering, subtle dewy sheen over collarbones and decolletage, flawless translucent clarity"

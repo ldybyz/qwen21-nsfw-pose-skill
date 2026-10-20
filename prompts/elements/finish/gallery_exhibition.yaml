@@ -1,0 +1,10 @@
+# ⑦ 画质后缀：展览级艺术品质
+element: finish
+id: gallery_exhibition
+name_zh: "画廊展览级品质"
+name_en: "Gallery Exhibition Quality"
+tags: [gallery, art, exhibition, classical]
+
+prompt: >-
+  8k resolution, gallery exhibition quality, photorealistic anatomy,
+  classical fine-art lighting.

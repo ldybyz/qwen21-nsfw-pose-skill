@@ -1,0 +1,15 @@
+# ⑤ 皮肤质感：精油高光
+element: skin
+id: oily_glisten
+name_zh: "精油高光润泽"
+name_en: "Oily Glistening Skin"
+tags: [oily, glisten, wet, specular, bold]
+
+prompt: >-
+  Her skin is fully glistening with warm oil that creates high-gloss specular
+  highlights across her chest, stomach, and thighs. Authentic skin texture
+  with visible pores, slick oily sheen.
+
+variants:
+  subtle: "Her skin glistens with a subtle oily sheen, natural skin texture with visible pores"
+  extreme: "Her entire body is slathered in thick massage oil, creating mirror-like specular reflections on every curve, high-gloss wet skin"

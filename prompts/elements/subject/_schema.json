@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Subject Element",
+  "description": "主体/人物要素 — 提示词七要素之 ②。可引用 character card 或内联描述。",
+  "type": "object",
+  "required": ["element", "id", "name_zh", "name_en"],
+  "properties": {
+    "element": { "const": "subject" },
+    "id": { "type": "string", "pattern": "^[a-z0-9_]+$" },
+    "name_zh": { "type": "string" },
+    "name_en": { "type": "string" },
+    "tags": { "type": "array", "items": { "type": "string" } },
+    "source": {
+      "type": "string",
+      "enum": ["inline", "character"],
+      "description": "inline = 直接使用 prompt 字段; character = 从 character card 的 Modular Block 读取"
+    },
+    "character_path": {
+      "type": "string",
+      "description": "仅当 source=character 时有效，指向 characters/ 下的 .md 文件"
+    },
+    "prompt": {
+      "type": "string",
+      "description": "仅当 source=inline 时使用的主体描述"
+    }
+  }
+}

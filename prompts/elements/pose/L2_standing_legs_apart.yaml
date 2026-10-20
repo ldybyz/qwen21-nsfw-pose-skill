@@ -1,0 +1,22 @@
+# ③ 姿态要素：站立岔开腿 (L2)
+element: pose
+id: L2_standing_legs_apart
+name_zh: "站立岔腿低角度"
+name_en: "Standing with Legs Apart (Low Angle)"
+tier: L2
+tags: [standing, open, bold, low_angle, nsfw]
+
+prompt: >-
+  standing in a relaxed posture with legs slightly spread apart,
+  one leg straight while the other knee is bent, feet slightly parted,
+
+limb_detail:
+  legs: "legs spread apart, one leg straight, other knee slightly bent"
+  arms: "arms relaxed at sides or one hand on wall/railing for support"
+  torso: "upright posture, weight shifted to straight leg"
+  head: "looking down at camera or away with relaxed expression"
+
+compatibility:
+  best_with_camera: [low_angle_floor]
+  best_with_setting: [cyber_balcony, sunset_beach_rock]
+  recommended_lora: "qwen2_1-femaledVaginus-nsfw-v1_3-fine_L22-31.safetensors"

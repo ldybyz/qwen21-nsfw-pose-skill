@@ -1,0 +1,18 @@
+# ① 镜头/视角要素：俯拍顶视
+element: camera
+id: overhead_topdown
+name_zh: "俯拍顶视"
+name_en: "Overhead Top-Down Shot"
+tags: [overhead, dramatic, L3]
+boldness_boost: "+1"
+
+prompt: >-
+  A hyper-realistic, top-down overhead shot looking directly down at,
+
+variants:
+  gentle: "A hyper-realistic, slightly elevated overhead photograph looking down at"
+  extreme: "An extreme overhead bird's-eye view looking straight down at"
+
+compatibility:
+  best_with_poses: [L2_lying_back_legs_open, L3_overhead_spread]
+  avoid_with: [low_angle_floor]

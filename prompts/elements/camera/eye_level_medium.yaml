@@ -1,0 +1,18 @@
+# ① 镜头/视角要素：平视中景
+element: camera
+id: eye_level_medium
+name_zh: "平视中景"
+name_en: "Eye-Level Medium Shot"
+tags: [eye_level, neutral, editorial, L0, L1]
+boldness_boost: "0"
+
+prompt: >-
+  A hyper-realistic, eye-level medium shot photograph of,
+
+variants:
+  studio: "A hyper-realistic, medium-full shot studio photograph of"
+  portrait: "A hyper-realistic, eye-level portrait photograph of"
+
+compatibility:
+  best_with_poses: [L0_standing_hip, L0_seated_crossed, L1_sitting_side, L2_seated_wide_elbows]
+  avoid_with: []

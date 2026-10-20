@@ -1,0 +1,25 @@
+# 预设配方：赛博阳台·霓虹雨夜
+recipe: cyber_balcony_neon
+name_zh: "赛博阳台·霓虹雨夜"
+description: "赛博朋克霓虹雨夜阳台，站立岔腿低角度"
+
+elements:
+  camera: low_angle_floor
+  subject: generic_young_woman
+  pose: L2_standing_legs_apart
+  setting: cyber_balcony
+  skin: wet_water_droplets
+  anatomy: full_reveal_explicit
+  finish: 8k_cinematic
+
+params:
+  steps: 50
+  cfg: 2.5
+  sampler: er_sde
+  scheduler: beta
+  seed: 80964
+  size: "1152x1728"
+  lora: "qwen2_1-femaledVaginus-nsfw-v1_3-fine_L22-31.safetensors"
+  lora_strength: 1.0
+
+negative_prompt: ""

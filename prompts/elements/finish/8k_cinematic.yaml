@@ -1,0 +1,10 @@
+# ⑦ 画质后缀：8K 电影感
+element: finish
+id: 8k_cinematic
+name_zh: "8K 电影感光影"
+name_en: "8K Cinematic Resolution"
+tags: [8k, cinematic, photorealistic, standard]
+
+prompt: >-
+  8k resolution, cinematic lighting, candid "caught in the moment"
+  atmosphere, photorealistic anatomy.

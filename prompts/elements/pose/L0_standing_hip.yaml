@@ -1,0 +1,22 @@
+# ③ 姿态要素：站姿叉腰 (L0)
+element: pose
+id: L0_standing_hip
+name_zh: "站姿叉腰"
+name_en: "Standing with Hand on Hip"
+tier: L0
+tags: [standing, editorial, closed, clothed]
+
+prompt: >-
+  standing with her weight on one leg, one hand resting on her hip,
+  her other arm relaxed by her side, chin slightly tilted, looking at the camera,
+
+limb_detail:
+  legs: "one leg bearing weight, the other slightly bent at the knee"
+  arms: "one hand on hip, opposite arm relaxed at her side"
+  torso: "slight S-curve contrapposto with gentle hip tilt"
+  head: "chin slightly tilted, direct confident gaze"
+
+compatibility:
+  best_with_camera: [eye_level_medium]
+  best_with_setting: [any]
+  recommended_lora: ""

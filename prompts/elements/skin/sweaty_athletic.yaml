@@ -1,0 +1,15 @@
+# ⑤ 皮肤质感：运动暴汗
+element: skin
+id: sweaty_athletic
+name_zh: "运动暴汗光泽"
+name_en: "Athletic Sweaty Skin"
+tags: [sweaty, athletic, workout, sheen]
+
+prompt: >-
+  Her skin glistens with fine beads of sweat from exercise, taut muscles
+  showing subtle definition beneath the skin surface. Authentic skin
+  texture with visible pores and natural perspiration sheen.
+
+variants:
+  yoga: "Fine sweat beads on her forehead and chest from the stretch, skin warm and flushed, toned muscle definition visible"
+  intense: "Her entire body is drenched in sweat, droplets running down her spine and between her breasts, skin flushed red from intense effort"

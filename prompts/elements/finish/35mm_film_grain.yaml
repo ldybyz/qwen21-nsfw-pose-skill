@@ -1,0 +1,10 @@
+# ⑦ 画质后缀：35mm 胶片颗粒
+element: finish
+id: 35mm_film_grain
+name_zh: "35mm 胶片颗粒风"
+name_en: "35mm Film Grain Vintage"
+tags: [film, grain, vintage, analog, retro]
+
+prompt: >-
+  Authentic film grain, slight motion softness, unposed candid aesthetic,
+  raw skin texture with natural folds, nostalgic 1970s warm cinema look.

@@ -1,0 +1,32 @@
+# 预设配方：林语婷·新中式茶室
+recipe: chinese_tearoom_lin
+name_zh: "林语婷·新中式茶室"
+description: "将林语婷注入新中式茶室场景，低角度跪坐，瓷白露水肌"
+
+elements:
+  camera: low_angle_floor
+  subject: lin_yuting
+  pose: L1_kneeling_open
+  setting: chinese_tearoom
+  skin: dewy_porcelain
+  anatomy: full_reveal_explicit
+  finish: 8k_cinematic
+
+# 覆盖姿态细节以匹配原场景的茶壶交互
+overrides:
+  pose.prompt: >-
+    kneeling with her knees gently parted, one hand gracefully resting on
+    the edge of the tea tray near a steaming purple clay teapot, her other
+    hand placed on her thigh.
+
+params:
+  steps: 45
+  cfg: 2.5
+  sampler: er_sde
+  scheduler: beta
+  seed: 80964
+  size: "1152x1728"
+  lora: "qwen2_1-femaledVaginus-nsfw-v1_3-fine_L22-31.safetensors"
+  lora_strength: 1.0
+
+negative_prompt: ""

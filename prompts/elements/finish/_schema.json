@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Finish Element",
+  "description": "画质后缀要素 — 提示词七要素之 ⑦",
+  "type": "object",
+  "required": ["element", "id", "name_zh", "name_en", "prompt"],
+  "properties": {
+    "element": { "const": "finish" },
+    "id": { "type": "string", "pattern": "^[a-z0-9_]+$" },
+    "name_zh": { "type": "string" },
+    "name_en": { "type": "string" },
+    "tags": { "type": "array", "items": { "type": "string" } },
+    "prompt": { "type": "string", "description": "画质后缀提示词" }
+  }
+}

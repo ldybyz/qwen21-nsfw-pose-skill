@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Pose Element",
+  "description": "姿态要素 — 提示词七要素之 ③",
+  "type": "object",
+  "required": ["element", "id", "name_zh", "name_en", "tier", "prompt"],
+  "properties": {
+    "element": { "const": "pose" },
+    "id": { "type": "string", "pattern": "^[a-z0-9_]+$" },
+    "name_zh": { "type": "string" },
+    "name_en": { "type": "string" },
+    "tier": { "type": "string", "enum": ["L0", "L1", "L2", "L3"] },
+    "tags": { "type": "array", "items": { "type": "string" } },
+    "prompt": { "type": "string", "description": "核心姿态描述" },
+    "limb_detail": {
+      "type": "object",
+      "properties": {
+        "legs": { "type": "string" },
+        "arms": { "type": "string" },
+        "torso": { "type": "string" },
+        "head": { "type": "string" }
+      }
+    },
+    "compatibility": {
+      "type": "object",
+      "properties": {
+        "best_with_camera": { "type": "array", "items": { "type": "string" } },
+        "best_with_setting": { "type": "array", "items": { "type": "string" } },
+        "recommended_lora": { "type": "string" }
+      }
+    }
+  }
+}

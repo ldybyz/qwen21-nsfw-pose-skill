@@ -1,0 +1,22 @@
+# ③ 姿态要素：猫式跪趴伸展 (L2)
+element: pose
+id: L2_cat_stretch
+name_zh: "猫式跪趴拱背伸展"
+name_en: "Cat-Cow Kneeling Stretch"
+tier: L2
+tags: [kneeling, prone, stretch, yoga, bold]
+
+prompt: >-
+  on all fours in a cat-stretch posture, hips raised high and back arched,
+  arms stretched forward flat on the surface, spine deeply curved,
+
+limb_detail:
+  legs: "knees hip-width apart on the floor, hips raised and pushed back"
+  arms: "arms stretched fully forward, palms flat on the surface"
+  torso: "deep spinal arch, chest lowered toward the floor"
+  head: "face looking forward or resting on arms"
+
+compatibility:
+  best_with_camera: [low_angle_floor, eye_level_medium]
+  best_with_setting: [penthouse_stretch, pilates_stretch]
+  recommended_lora: "qwen2_1-femaledVaginus-nsfw-v1_3-fine_L22-31.safetensors"

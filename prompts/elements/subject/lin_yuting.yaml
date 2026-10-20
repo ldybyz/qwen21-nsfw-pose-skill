@@ -1,0 +1,17 @@
+# ② 主体要素：林语婷（引用 character card）
+element: subject
+id: lin_yuting
+name_zh: "林语婷 - 江南古典温婉闺秀"
+name_en: "Lin Yuting - Classical Chinese Beauty"
+source: character
+character_path: characters/east_asian/lin_yuting.md
+tags: [east_asian, chinese, classical, porcelain]
+
+# 备用内联版本（当不需要解析 character card 时使用）
+prompt: >-
+  a graceful 23-year-old Chinese woman named Lin Yuting, featuring serene
+  delicate oriental facial features, tender dark brown almond eyes, and
+  soft petal-pink parted lips, with waist-length straight silky jet-black
+  hair flowing naturally over her shoulders, possessing a slender feminine
+  frame with delicate collarbones, graceful waist, and luminous porcelain
+  fair skin with subtle authentic pores and dewy sheen

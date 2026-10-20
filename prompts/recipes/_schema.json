@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Recipe",
+  "description": "预设组合方案 — 引用七个要素 + 推理参数的完整配方",
+  "type": "object",
+  "required": ["recipe", "name_zh", "elements"],
+  "properties": {
+    "recipe": { "type": "string", "pattern": "^[a-z0-9_]+$" },
+    "name_zh": { "type": "string" },
+    "description": { "type": "string" },
+    "elements": {
+      "type": "object",
+      "properties": {
+        "camera": { "type": "string", "description": "camera element id" },
+        "subject": {
+          "oneOf": [
+            { "type": "string", "description": "subject element id" },
+            {
+              "type": "object",
+              "properties": {
+                "source": { "type": "string", "enum": ["character", "inline", "element"] },
+                "path": { "type": "string" },
+                "id": { "type": "string" }
+              }
+            }
+          ]
+        },
+        "pose": { "type": "string" },
+        "setting": { "type": "string" },
+        "skin": { "type": "string" },
+        "anatomy": { "type": "string" },
+        "finish": { "type": "string" }
+      }
+    },
+    "overrides": {
+      "type": "object",
+      "additionalProperties": { "type": "string" },
+      "description": "覆盖指定要素的 prompt 字段"
+    },
+    "params": {
+      "type": "object",
+      "properties": {
+        "steps": { "type": "integer" },
+        "cfg": { "type": "number" },
+        "sampler": { "type": "string" },
+        "scheduler": { "type": "string" },
+        "seed": { "type": "integer" },
+        "size": { "type": "string", "pattern": "^\\d+x\\d+$" },
+        "lora": { "type": "string" },
+        "lora_strength": { "type": "number" }
+      }
+    },
+    "negative_prompt": { "type": "string" }
+  }
+}

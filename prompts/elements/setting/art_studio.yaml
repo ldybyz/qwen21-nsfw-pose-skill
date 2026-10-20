@@ -1,0 +1,24 @@
+# ④ 场景+光影：古典画室
+element: setting
+id: art_studio
+name_zh: "古典画室·天窗自然光"
+name_en: "Classical Painter's Loft Studio"
+tags: [art, studio, classical, natural_light, chiaroscuro]
+
+prompt: >-
+  posing in a sunlit classical painter's loft studio, seated atop a
+  weathered round wooden stool.
+
+lighting: >-
+  Soft, diffuse northern daylight cascades down from a large sloping
+  industrial skylight above, modeling gentle chiaroscuro shadows across
+  her clavicle, ribcage, and curves. Stretched canvases, wooden easels,
+  and plaster bust sculptures surround her in soft bokeh.
+
+props:
+  - "weathered round wooden stool"
+  - "stretched canvases and wooden easels"
+  - "plaster bust sculptures"
+  - "industrial skylight"
+
+mood: "artistic, classical, contemplative, gallery exhibition"

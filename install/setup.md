@@ -43,12 +43,13 @@ curl --fail --silent --show-error "$COMFYUI_URL/system_stats" >/dev/null \
 | 路线② Edit | 3 个底模；仅在需要脱衣编辑时再装 edit LoRA |
 | 路线③ 脚本姿势迁移 | 3 个底模 + VNCCS LoRA；需要一张 3D 人偶姿势渲染图（见 README 路线③）；无需浏览器 |
 | 路线④ VNCCS 精确姿势 | 3 个底模 + VNCCS 节点/LoRA + 姿势库 + Playwright/CDP 浏览器 |
+| 模块化要素与批量工作流 | 额外安装 `PyYAML`：`python3 -m pip install pyyaml` |
 | 生成对比表 | 额外安装 `Pillow`：`python3 -m pip install Pillow` |
 
-路线①②③只用 Python 标准库，无需 `pip install`。路线④需要 Playwright Python 包：
+路线①②③基础运行只用 Python 标准库；使用七要素模块化组装（`compose_prompt.py --recipe`）与批量工作流（`run_batch.py`）需安装 `pyyaml`。路线④需要 Playwright Python 包：
 
 ```bash
-python3 -m pip install playwright
+python3 -m pip install playwright pyyaml
 ```
 
 路线④还需要一个可连接的 CDP 浏览器。脚本优先导入 OpenClaw 适配器

@@ -1,0 +1,25 @@
+# ④ 场景+光影：赛博霓虹雨夜阳台
+element: setting
+id: cyber_balcony
+name_zh: "赛博霓虹·雨夜阳台"
+name_en: "Rain-Slicked Cyberpunk Balcony at Night"
+tags: [cyberpunk, night, rain, neon, urban, modern]
+
+prompt: >-
+  on a wet rain-slicked balcony of a high-rise apartment in a futuristic
+  metropolis at night, leaning back against the sleek glass railing.
+
+lighting: >-
+  The wet floor reflects vibrant magenta and cyan neon lights.
+  Rain droplets and city mist cling to her skin, creating glossy specular
+  reflections. In the background, towering skyscrapers with glowing neon
+  billboards are blurred into beautiful bokeh.
+  High-contrast dual lighting, moody cyberpunk atmosphere.
+
+props:
+  - "sleek glass railing"
+  - "wet reflective floor"
+  - "neon billboards in background"
+  - "rain droplets and city mist"
+
+mood: "moody, cyberpunk, high-contrast, rain-soaked"

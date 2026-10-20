@@ -1,0 +1,10 @@
+# ⑦ 画质后缀：哈苏棚拍
+element: finish
+id: hasselblad_studio
+name_zh: "哈苏大画幅棚拍"
+name_en: "Hasselblad Studio Portrait"
+tags: [hasselblad, studio, portrait, masterwork]
+
+prompt: >-
+  8k resolution, cinematic color grading, masterwork,
+  Hasselblad 80mm photography.

@@ -1,0 +1,19 @@
+# ① 镜头/视角要素：地面极低仰拍
+element: camera
+id: low_angle_floor
+name_zh: "地面极低仰拍"
+name_en: "Low-Angle Floor Shot"
+tags: [low_angle, dramatic, nsfw_friendly, L2, L3]
+boldness_boost: "+1"
+
+prompt: >-
+  A hyper-realistic, low-angle shot from floor level looking up,
+
+variants:
+  cinematic: "A hyper-realistic, low-angle cinematic photograph"
+  extreme: "An extreme low-angle shot from ground level, looking up between"
+  water_line: "The camera is set just above the water line, looking slightly upward"
+
+compatibility:
+  best_with_poses: [L1_kneeling_open, L2_seated_wide_elbows, L2_prone_hips_lifted, L2_standing_legs_apart]
+  avoid_with: [overhead_topdown]

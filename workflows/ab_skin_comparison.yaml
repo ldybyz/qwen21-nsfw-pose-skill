@@ -1,0 +1,37 @@
+# A/B 对比工作流：皮肤质感对比
+# 固定场景和姿态，对比不同皮肤质感效果
+workflow: ab_skin_comparison
+name_zh: "皮肤质感 A/B 对比·温泉"
+description: "固定温泉场景和跪坐后倾姿态，对比五种皮肤质感的视觉效果差异"
+
+base:
+  camera: low_angle_floor
+  subject: lin_yuting
+  pose: L1_kneeling_back_brace
+  setting: onsen_hotspring
+  anatomy: full_reveal_explicit
+  finish: 8k_cinematic
+
+compare:
+  - skin: dewy_porcelain
+    label: "A: 瓷白露水肌"
+  - skin: oily_glisten
+    label: "B: 精油高光"
+  - skin: wet_water_droplets
+    label: "C: 水滴湿润"
+  - skin: sweaty_athletic
+    label: "D: 运动暴汗"
+  - skin: matte_natural
+    label: "E: 自然哑光"
+
+params:
+  steps: 45
+  cfg: 2.5
+  sampler: er_sde
+  scheduler: beta
+  seed: 80964
+  size: "1152x1728"
+  lora: "qwen2_1-femaledVaginus-nsfw-v1_3-fine_L22-31.safetensors"
+  lora_strength: 1.0
+
+output_pattern: "outputs/ab_skin/{skin}.png"

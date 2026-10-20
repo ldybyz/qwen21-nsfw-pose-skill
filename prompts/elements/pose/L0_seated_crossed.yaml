@@ -1,0 +1,22 @@
+# ③ 姿态要素：坐姿交叠脚踝 (L0)
+element: pose
+id: L0_seated_crossed
+name_zh: "坐姿交叠脚踝"
+name_en: "Seated with Ankles Crossed"
+tier: L0
+tags: [seated, editorial, closed, elegant]
+
+prompt: >-
+  sitting on a chair with legs crossed at the ankles, hands resting gracefully
+  on her thighs, back straight with a slight lean,
+
+limb_detail:
+  legs: "legs together, ankles crossed, knees aligned"
+  arms: "both hands resting on thighs or one on armrest"
+  torso: "upright posture with slight forward lean"
+  head: "looking to the side with a calm expression"
+
+compatibility:
+  best_with_camera: [eye_level_medium]
+  best_with_setting: [chinese_tearoom, art_studio]
+  recommended_lora: ""

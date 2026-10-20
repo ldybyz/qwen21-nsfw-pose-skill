@@ -1,0 +1,14 @@
+# ⑤ 皮肤质感：自然哑光素肌
+element: skin
+id: matte_natural
+name_zh: "自然哑光素肌"
+name_en: "Matte Natural Skin"
+tags: [natural, matte, subtle, editorial]
+
+prompt: >-
+  Natural ivory skin tone with visible veins, authentic skin texture with
+  subtle pores, calm and even complexion without artificial highlights.
+
+variants:
+  warm: "Warm natural skin tone with soft golden undertone, authentic pores and fine texture"
+  cool: "Cool-toned natural fair skin with pink undertones, authentic texture with visible fine veins"

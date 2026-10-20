@@ -1,0 +1,22 @@
+# ③ 姿态要素：跪坐双膝微开 (L1)
+element: pose
+id: L1_kneeling_open
+name_zh: "跪坐双膝微开"
+name_en: "Kneeling with Knees Parted"
+tier: L1
+tags: [kneeling, open, relaxed, floor]
+
+prompt: >-
+  kneeling with her knees gently parted, one hand resting on the surface
+  beside her, her other hand placed on her thigh,
+
+limb_detail:
+  legs: "kneeling on both knees, knees gently parted"
+  arms: "one hand on surface, other resting on thigh"
+  torso: "upright kneeling posture, slight forward lean"
+  head: "looking down or toward camera with a serene expression"
+
+compatibility:
+  best_with_camera: [low_angle_floor, eye_level_medium]
+  best_with_setting: [chinese_tearoom, onsen_hotspring, bamboo_courtyard]
+  recommended_lora: "qwen2_1-femaledVaginus-nsfw-v1_3-fine_L22-31.safetensors"

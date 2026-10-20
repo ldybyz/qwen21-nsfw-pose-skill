@@ -1,0 +1,19 @@
+# ① 镜头/视角要素：复古胶片低机位
+element: camera
+id: vintage_film_low
+name_zh: "复古胶片低机位"
+name_en: "Vintage Film Low Angle"
+tags: [vintage, film_grain, low_angle, retro, L2]
+boldness_boost: "+1"
+
+prompt: >-
+  Private grainy vintage 35mm photograph, captured at cushion-level low angle, of
+
+variants:
+  polaroid: "Faded Polaroid-style snapshot, slightly off-center framing, of"
+  analog: "Analog 35mm film photograph with authentic grain and warm color shift, low angle shot of"
+
+compatibility:
+  best_with_poses: [L2_reclining_wide, L1_reclining_propped]
+  best_with_settings: [vintage_motel]
+  avoid_with: []

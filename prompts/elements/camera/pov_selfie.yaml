@@ -1,0 +1,18 @@
+# ① 镜头/视角要素：第一人称自拍
+element: camera
+id: pov_selfie
+name_zh: "第一人称自拍/手机前摄"
+name_en: "POV Selfie / Front Camera"
+tags: [pov, selfie, intimate, candid, L2, L3]
+boldness_boost: "0"
+
+prompt: >-
+  Private grainy photograph taken from a first-person selfie angle, front-facing camera view of,
+
+variants:
+  phone: "Private candid phone camera selfie, front-facing lens slightly above eye level, of"
+  mirror: "Private photograph taken through a full-length mirror reflection, showing"
+
+compatibility:
+  best_with_poses: [L2_lying_back_legs_open, L1_reclining_propped]
+  avoid_with: []

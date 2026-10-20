@@ -1,0 +1,22 @@
+# ③ 姿态要素：极低仰视双腿间 (L3)
+element: pose
+id: L3_extreme_low_between
+name_zh: "极低仰视双腿间"
+name_en: "Extreme Low Angle Between Open Legs"
+tier: L3
+tags: [extreme, low_angle, open, crop, nsfw]
+
+prompt: >-
+  the camera looks up from an extreme low angle between her open legs,
+  framing the distinct contours of her lower anatomy in the center,
+
+limb_detail:
+  legs: "legs open wide, framing the camera view from below"
+  arms: "arms relaxed or supporting body"
+  torso: "body above camera, viewed from below"
+  head: "looking down at camera or away"
+
+compatibility:
+  best_with_camera: [low_angle_floor]
+  best_with_setting: [any]
+  recommended_lora: "qwen2_1-femaledVaginus-nsfw-v1_3-fine_L22-31.safetensors"
