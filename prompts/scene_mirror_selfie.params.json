@@ -1,0 +1,11 @@
+{
+  "note": "Private mirror selfie squat with smartphone. Uses thesealpacas-nsfw-v2 @0.8 with explicit negative prompt and higher CFG (4.0).",
+  "steps": 45,
+  "cfg": 4.0,
+  "sampler": "er_sde",
+  "scheduler": "beta",
+  "seed": 124880844757561,
+  "size": "1152x1728",
+  "lora": "thesealpacas-nsfw-v2.safetensors",
+  "lora_strength": 0.8
+}

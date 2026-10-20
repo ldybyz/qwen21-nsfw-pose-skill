@@ -1,0 +1,11 @@
+{
+  "note": "Vintage 70s motel room on worn red leather couch. Uses thesealpacas-nsfw-v2 @0.8 with CFG 4.0, negative prompt, and warm retro film grain.",
+  "steps": 45,
+  "cfg": 4.0,
+  "sampler": "er_sde",
+  "scheduler": "beta",
+  "seed": 124880844757561,
+  "size": "1152x1728",
+  "lora": "thesealpacas-nsfw-v2.safetensors",
+  "lora_strength": 0.8
+}

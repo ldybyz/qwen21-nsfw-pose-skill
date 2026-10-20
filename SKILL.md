@@ -66,7 +66,8 @@ Outputs land under `./outputs/` (the scripts create directories as needed).
 | `SKILL.md` | this file |
 | `scripts/` | `doctor.py` (read-only environment self-check: ComfyUI, models, LoRAs, VNCCS, pose library, browser stack — every check degrades to WARN/SKIP with a fix hint), `qwen_pose_test.py` (routes ①②), `run_pose_transfer.py` (route ③: pose transfer from a 3D mannequin render, no browser), `run_vnccs_ui.py` (route ④), `make_custom_pose.py` (new pose from a library pose by bone rotation), `run_phase5.py` + `build_phase5_sheet.py` (case re-run & comparison sheet), `media_lock.py` (shared media lock, bundled), `browser_fallback.py` (standalone CDP fallback when the OpenClaw adapter is absent), `validate_package.py` (offline package integrity check) |
 | `workflows/` | `qwen21_t2i.json`, `qwen21_edit.json` (official Qwen-Image 2.1 graphs), `VNCCS_PoseStudio_QI2.1.json` |
-| `prompts/` | the 3 author prompts + `.params.json` (the exact local-test settings) |
+| `prompts/` | the 3 author prompts + `.params.json` (the exact local-test settings) + 16 additional diverse/Chinese aesthetic scenes |
+| `characters/` | structured character cards classified by ethnicity (`east_asian/`, `caucasian/`, etc.) with standalone prompts & modular scene injection blocks |
 | `references/` | `pose_examples/` (L0/L1/L2 seaside examples), `src_standing.png` (default character for route ④) |
 | `downloads/samples/` | author originals `*_author.jpg` (shower/massage/selfie) + `phase5_meta.json` (prompt, params, seed, complete graph JSONs) + the 3 raw ComfyUI graph files — used by `scripts/run_phase5.py` & `build_phase5_sheet.py` |
 | `pose_library/local_user_poses/Uncategorized/` | 55 curated extra pose JSONs + previews — copy into ComfyUI's `PoseLibrary/local_user_poses/Uncategorized/` after installing the node |

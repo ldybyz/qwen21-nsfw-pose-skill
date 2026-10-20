@@ -126,9 +126,10 @@ python3 scripts/qwen_pose_test.py \
 ```
 ├── SKILL.md            # agent 技能（完整规则）
 ├── install/setup.md    # 安装指南（模型/LoRA/节点/姿势库）
-├── scripts/            # doctor.py 自检、出图/自定义姿势脚本、浏览器 fallback、media_lock.py、validate_package.py
+├── scripts/            # doctor.py 自检、compose_prompt.py 角色组装、出图/自定义姿势脚本、浏览器 fallback 等
 ├── workflows/          # qwen21_t2i.json / qwen21_edit.json / VNCCS_PoseStudio_QI2.1.json
-├── prompts/            # 3 篇作者原提示词 + 参数
+├── prompts/            # 19 篇完整场景提示词 + 参数规范
+├── characters/         # 独立人物卡库（按人种分类：east_asian/、caucasian/ 等，含独立生图与模块化拼装）
 ├── references/         # 效果展示图（L0/L1/L2 海边对照）+ 默认人物图
 ├── downloads/samples/  # 作者原图 + 作者元数据 + 原始工作流 JSON
 └── pose_library/       # 55 个手工精选姿势（安装时拷入 ComfyUI）

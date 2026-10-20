@@ -1,0 +1,11 @@
+{
+  "note": "Modern minimalist Chinese tearoom. Translucent rice-paper screen, tea steam swirls, purple clay teapot, porcelain fair skin.",
+  "steps": 45,
+  "cfg": 2.5,
+  "sampler": "er_sde",
+  "scheduler": "beta",
+  "seed": 80964,
+  "size": "1152x1728",
+  "lora": "qwen2_1-femaledVaginus-nsfw-v1_3-fine_L22-31.safetensors",
+  "lora_strength": 1.0
+}

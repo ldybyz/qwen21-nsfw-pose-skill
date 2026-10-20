@@ -1,0 +1,11 @@
+{
+  "note": "Fine-art painter studio life model. Soft skylight chiaroscuro, wooden stool sculptural posture. Great for posture-v3 or femaledVaginus.",
+  "steps": 45,
+  "cfg": 2.5,
+  "sampler": "er_sde",
+  "scheduler": "beta",
+  "seed": 80964,
+  "size": "1152x1728",
+  "lora": "nsfw-posture-v3.safetensors",
+  "lora_strength": 0.85
+}
