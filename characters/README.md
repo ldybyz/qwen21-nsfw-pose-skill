@@ -14,14 +14,24 @@
 
 | 编号 | 人物中文名 | 英文代号 | 时代/类型分类 | 原型灵感复刻 | 发型发质与容貌体态 | 推荐 LoRA | 推荐场景搭配 | 卡片链接 |
 | :---: | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :---: |
-| **CN-01** | **赵凌燕** | Zhao Lingyan | **汉代宫廷** | 佟丽娅（《母仪天下》赵飞燕） | 汉代垂鬟分髾高盘髻 / 掌上轻舞 / 楚腰纤细 / 丹凤眼 | `femaledVaginus-v1.3` @ 1.0 | 幽篁竹林水阁、汉宫暖阁、拔步床 | [`zhao_lingyan.md`](chinese/zhao_lingyan.md) |
-| **CN-02** | **杨玉瑶** | Yang Yuyao | **盛唐帝国** | 殷桃 / 范冰冰（盛唐杨贵妃） | 唐代高耸巍峨高髻 / 额绘金红牡丹花钿 / 丰腴润泽沙漏曲线 | `femaledVaginus-v1.3` @ 1.0 | 私汤温泉暖池、新中式茶室、金丝软榻 | [`yang_yuyao.md`](chinese/yang_yuyao.md) |
-| **CN-03** | **白曼清** | Bai Manqing | **近代民国** | 张曼玉（《花样年华》）+ 汤唯（《色戒》） | 30年代海派手推波浪卷 / 细眉红唇 / 旗袍衣架子S曲线 | `thesealpacas-nsfw-v2` @ 0.85 | 旗袍暗光酒廊、复古旅馆、镜前自拍 | [`bai_manqing.md`](chinese/bai_manqing.md) |
-| **CN-04** | **杜雯** | Du Wen | **现代高级时尚** | 刘雯 + 杜鹃（顶级东方超模） | 齐肩极简刀切黑直发 / 骨相高级 / 刀刻下颌线 / 直角肩九头身 | `femaledVaginus-v1.3` @ 1.0 | 顶层豪宅落地窗、画室人体、极简棚拍 | [`du_wen.md`](chinese/du_wen.md) |
-| **CN-05** | **热依仙** | Reyixian | **现代明艳顶流** | 迪丽热巴（顶级浓颜神颜） | 丰盈海藻黑长卷发 / 欧亚异域明艳大五官 / 驼峰琼鼻 / 腰臀比尤物 | `thesealpacas-nsfw-v2` @ 0.85 | 奢华游艇日光浴、午夜厨房、全景落地窗 | [`reyixian.md`](chinese/reyixian.md) |
-| **CN-06** | **林潇湘** | Lin Xiaoxiang | **古典文学名著** | 陈晓旭（87版《红楼梦》林黛玉） | 凌虚流云半绾髻饰白玉簪 / 罥烟眉含情目 / 弱柳扶风娇美病态骨感 | `femaledVaginus-v1.3` @ 1.0 | 红木雕花拔步床、潇湘馆竹影、水阁 | [`lin_xiaoxiang.md`](chinese/lin_xiaoxiang.md) |
-| **CN-07** | **龙芷清** | Long Zhiqing | **经典武侠名著** | 刘亦菲 / 李若彤（小龙女神仙姐姐） | 及臀乌发系纯白丝绦 / 不食人间烟火 / 冰肌玉骨 / 冷若霜雪 | `femaledVaginus-v1.3` @ 1.0 | 江南烟雨水阁、幽篁竹林、飞檐月色 | [`long_zhiqing.md`](chinese/long_zhiqing.md) |
-| **CN-08** | **苏魅儿** | Su Mei'er | **古典神话志怪** | 温碧霞 / 娜然（《封神演义》苏妲己） | 慵懒披散海藻波浪卷 / 摄魂狐眸微挑 / 咬唇娇媚 / 水蛇蜂腰 | `thesealpacas-nsfw-v2` @ 0.85 | 古典红木雕花拔步床、私汤温泉、桑拿微汗 | [`su_meier.md`](chinese/su_meier.md) |
+| **CN-01** | **赵凌燕** | Zhao Lingyan | **汉代宫廷** | 佟丽娅（《母仪天下》赵飞燕） | 汉代垂鬟分髾高盘髻 / 掌上轻舞 / 楚腰纤细 / 丹凤眼 | `femaledVaginus-v1.3` @ 1.0 | 幽篁竹林水阁、汉宫暖阁、拔步床 | [`cn01_zhao_lingyan.md`](chinese/cn01_zhao_lingyan.md) |
+| **CN-02** | **杨玉瑶** | Yang Yuyao | **盛唐帝国** | 殷桃 / 范冰冰（盛唐杨贵妃） | 唐代高耸巍峨高髻 / 额绘金红牡丹花钿 / 丰腴润泽沙漏曲线 | `femaledVaginus-v1.3` @ 1.0 | 私汤温泉暖池、新中式茶室、金丝软榻 | [`cn02_yang_yuyao.md`](chinese/cn02_yang_yuyao.md) |
+| **CN-03** | **白曼清** | Bai Manqing | **近代民国** | 张曼玉（《花样年华》）+ 汤唯（《色戒》） | 30年代海派手推波浪卷 / 细眉红唇 / 旗袍衣架子S曲线 | `thesealpacas-nsfw-v2` @ 0.85 | 旗袍暗光酒廊、复古旅馆、镜前自拍 | [`cn03_bai_manqing.md`](chinese/cn03_bai_manqing.md) |
+| **CN-04** | **杜雯** | Du Wen | **现代高级时尚** | 刘雯 + 杜鹃（顶级东方超模） | 齐肩极简刀切黑直发 / 骨相高级 / 刀刻下颌线 / 直角肩九头身 | `femaledVaginus-v1.3` @ 1.0 | 顶层豪宅落地窗、画室人体、极简棚拍 | [`cn04_du_wen.md`](chinese/cn04_du_wen.md) |
+| **CN-05** | **热依仙** | Reyixian | **现代明艳顶流** | 迪丽热巴（顶级浓颜神颜） | 丰盈海藻黑长卷发 / 欧亚异域明艳大五官 / 驼峰琼鼻 / 腰臀比尤物 | `thesealpacas-nsfw-v2` @ 0.85 | 奢华游艇日光浴、午夜厨房、全景落地窗 | [`cn05_reyixian.md`](chinese/cn05_reyixian.md) |
+| **CN-06** | **林潇湘** | Lin Xiaoxiang | **古典文学名著** | 陈晓旭（87版《红楼梦》林黛玉） | 凌虚流云半绾髻饰白玉簪 / 罥烟眉含情目 / 弱柳扶风娇美病态骨感 | `femaledVaginus-v1.3` @ 1.0 | 红木雕花拔步床、潇湘馆竹影、水阁 | [`cn06_lin_xiaoxiang.md`](chinese/cn06_lin_xiaoxiang.md) |
+| **CN-07** | **龙芷清** | Long Zhiqing | **经典武侠名著** | 刘亦菲 / 李若彤（小龙女神仙姐姐） | 及臀乌发系纯白丝绦 / 不食人间烟火 / 冰肌玉骨 / 冷若霜雪 | `femaledVaginus-v1.3` @ 1.0 | 江南烟雨水阁、幽篁竹林、飞檐月色 | [`cn07_long_zhiqing.md`](chinese/cn07_long_zhiqing.md) |
+| **CN-08** | **苏魅儿** | Su Mei'er | **古典神话志怪** | 温碧霞 / 娜然（《封神演义》苏妲己） | 慵懒披散海藻波浪卷 / 摄魂狐眸微挑 / 咬唇娇媚 / 水蛇蜂腰 | `thesealpacas-nsfw-v2` @ 0.85 | 古典红木雕花拔步床、私汤温泉、桑拿微汗 | [`cn08_su_meier.md`](chinese/cn08_su_meier.md) |
+| **CN-09** | **施浣纱** | Shi Huansha | **春秋战国** | 蒋勤勤（《西施》水灵第一神颜） | 沉鱼落雁 / 苎萝浣纱 / 天然去雕饰 / 捧心微蹙 / 清纯江南白月光 | `femaledVaginus-v1.3` @ 1.0 | 江南烟雨水阁、竹林溪边、禅意茶室 | [`cn09_shi_huansha.md`](chinese/cn09_shi_huansha.md) |
+| **CN-10** | **甄洛仙** | Zhen Luoxian | **三国魏晋** | 蔡少芬（《洛神》甄宓古典仙韵） | 凌波微步 / 罗袜生尘 / 魏晋凌云高髻 / 仙风玉骨 / 冰霜高洁神女 | `femaledVaginus-v1.3` @ 1.0 | 幽篁竹林水阁、荷塘月色、画室人体 | [`cn10_zhen_luoxian.md`](chinese/cn10_zhen_luoxian.md) |
+| **CN-11** | **武明空** | Wu Mingkong | **大周盛唐** | 刘晓庆 / 贾静雯（一代女皇武则天） | 一代女帝 / 至尊红颜 / 凤目含威 / 九龙凤冠脱落后霸气与成熟肉感 | `femaledVaginus-v1.3` @ 1.0 / `thesealpacas` | 雕花拔步龙榻、私汤温泉、龙凤金丝暖阁 | [`cn11_wu_mingkong.md`](chinese/cn11_wu_mingkong.md) |
+| **CN-12** | **李清照** | Li Qingzhao | **两宋雅韵** | 周迅（青年灵秀）+ 刘诗诗（宋风清雅） | 宋式极简美学 / 宋式白玉冠梳 / 误入藕花深处微醺少女感 / 知性文人风骨 | `femaledVaginus-v1.3` @ 1.0 | 新中式茶室、水墨书斋、江南水阁 | [`cn12_li_qingzhao.md`](chinese/cn12_li_qingzhao.md) |
+| **CN-13** | **柳如诗** | Liu Rushi | **明末清初** | 万茜（电影《柳如是》绝代名妓） | 秦淮八艳之首 / 儒士巾帼与风流名伶极致反差 / 纤指抚琴 / 堕马髻 | `thesealpacas-nsfw-v2` @ 0.85 | 秦淮画舫拔步床、禅意茶室、江南水阁 | [`cn13_liu_rushi.md`](chinese/cn13_liu_rushi.md) |
+| **CN-14** | **林芷萱** | Lin Zhixuan | **民国黄金年代** | 周迅（《人间四月天》林徽因） | 人间四月天 / 民国秀逸书卷气 / 纯净双麻花辫 / 清澈大杏眼 / 羊脂白玉骨感 | `thesealpacas-nsfw-v2` @ 0.8 | 古典画室写生、新中式茶室、微醺镜前 | [`cn14_lin_zhixuan.md`](chinese/cn14_lin_zhixuan.md) |
+| **CN-15** | **柳天仙** | Liu Tianxian | **现代神颜顶流** | 刘亦菲（现代私服/红毯天仙攻神颜） | 东方极品驼峰玉鼻 / 鹅蛋脸 / 冷白皮牛奶发光肌 / 纯欲出尘千金感天花板 | `thesealpacas-nsfw-v2` @ 0.85 / `taws` @ 0.95 | 私汤温泉暖池、豪宅全景落地窗、赛博阳台 | [`cn15_liu_tianxian.md`](chinese/cn15_liu_tianxian.md) |
+| **CN-16** | **邱曼妮** | Qiu Manni | **90s黄金港风** | 邱淑贞（《赌神2》红衣）+ 关之琳 | 港风大波浪卷发 / 烈焰红唇 / 猫系灵动圆杏眼 / 小骨架大胸蜂腰蜜桃臀尤物 | `thesealpacas-nsfw-v2` @ 0.85 | 复古汽车旅馆、暗光酒廊、深夜厨房 | [`cn16_qiu_manni.md`](chinese/cn16_qiu_manni.md) |
+| **CN-17** | **姬无双** | Ji Wushuang | **仙侠修仙小说** | 张雨绮（《妖猫传》春琴）+ 白鹿仙侠 | 红衣似火 / 赤足系金铃 / 额心朱砂魔纹 / 杀伐果断又媚骨天成 / 绝色魔尊 | `femaledVaginus-v1.3` @ 1.0 | 红幔雕花拔步床、幽篁竹林水阁、月下亭台 | [`cn17_ji_wushuang.md`](chinese/cn17_ji_wushuang.md) |
+| **CN-18** | **任楚楚** | Ren Chuchu | **金庸经典武侠** | 许晴（《笑傲江湖》圣姑任盈盈） | 绿竹巷抚琴圣姑 / 两腮动人甜美小梨涡 / 亦正亦邪傲娇美 / 娇羞含情目 | `femaledVaginus-v1.3` @ 1.0 | 绿竹巷幽篁水阁、新中式茶室、江南水阁 | [`cn18_ren_chuchu.md`](chinese/cn18_ren_chuchu.md) |
 
 ---
 
