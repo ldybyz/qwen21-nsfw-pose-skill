@@ -1,0 +1,77 @@
+# ========================================================
+# 写真套图模板：潮汐礁石·落日暮光 (Sunset Beach Rock)
+# ========================================================
+id: sunset_beach_rock
+name_zh: "潮汐礁石·落日暮光写真套图"
+description: "5幕海岛自然光影大片写真，琥珀晚霞落日熔金、潮汐浪沫微漾、湿发与微观盐晶水光，融合野性自然与极致肉体张力"
+scene_reference: "prompts/scene_sunset_beach_rock.txt"
+
+# 默认基础参数
+default_params:
+  lora: "qwen2_1-femaledVaginus-nsfw-v1_3-fine_L22-31.safetensors"
+  lora_strength: 1.0
+  cfg: 2.5
+  steps: 45
+  sampler: "er_sde"
+  scheduler: "beta"
+  width: 1152
+  height: 1728
+  negative: "blurry, deformed, bad anatomy, bad hands, plastic skin, cartoon, 3d render, doll, extra limbs, watermark, text"
+
+# 写真分镜列表
+shots:
+  - id: "01_rock_reclining"
+    name_zh: "礁石斜倚·浪花轻抚"
+    shot_type: "Low-angle candid / Wet tide sand"
+    steps: 45
+    prompt: >-
+      A hyper-realistic low-angle candid photograph of {SUBJECT} reclining against a weathered coastal rock
+      on a secluded beach at sunset. The camera is positioned low in the wet tidal sand, looking up along her figure.
+      One leg is bent at the knee with the foot planted on the wet sand, while the other leg is relaxed and extended outward,
+      creating a natural open posture. Foamy sea wash gently swirls around her ankles and hips.
+      Damp, windblown strands of hair cling to her shoulder, with droplets of saltwater glistening across her chest and thighs.
+      Warm magenta and amber sunset glow reflecting on wet sand, raw natural lighting, 8k cinematic masterwork.
+
+  - id: "02_tide_kneeling"
+    name_zh: "潮线跪姿·迎风仰面"
+    shot_type: "Medium shot / Sunset backlighting"
+    steps: 45
+    prompt: >-
+      A breathtaking medium shot of {SUBJECT}. She is completely nude, kneeling on the smooth wet beach shoreline
+      as shallow foamy waves lap gently against her thighs. Her hands rest lightly on her hips, torso tilted backward
+      as she turns her face toward the fading orange sun, letting the cool coastal breeze blow through her wet dark hair.
+      The dramatic golden-hour sunlight casts rich specular rim-light along her collarbones, waist, and thighs,
+      catching individual drops of ocean water on her glowing skin. Masterwork outdoor photography, 8k resolution.
+
+  - id: "03_sand_prone"
+    name_zh: "湿沙俯卧·海浪环抱"
+    shot_type: "Ultra-low ground angle / Wet sand texture"
+    steps: 50
+    prompt: >-
+      An ultra-low ground-level shot of {SUBJECT} lying prone on the wet compacted sand facing away at a three-quarter angle.
+      Her chin rests on her crossed forearms, back deeply arched so her hips and buttocks are subtly elevated above the wet sand.
+      A thin receding sheet of glassy seawater reflects the blazing violet and crimson sunset clouds around her body.
+      Fine grains of wet golden sand adhere naturally to her skin, thighs, and hips, highlighting authentic tactile texture.
+      Hasselblad 50mm landscape portrait, cinematic depth of field, 8k resolution.
+
+  - id: "04_wet_hair_standing"
+    name_zh: "踏浪回眸·日落熔金"
+    shot_type: "Full-body three-quarter / Sunset silhouette"
+    steps: 45
+    prompt: >-
+      A striking full-body photograph of {SUBJECT} standing ankle-deep in the gentle surf at dusk.
+      She is captured in mid-stride, turning her upper body back toward the lens with a mysterious, sensual gaze.
+      Both arms are raised to lightly wring saltwater from her hair behind her head, accentuating her hourglass frame,
+      firm bust, and long slender legs. The setting sun forms a golden halo directly behind her head, bathing her entire
+      silhouette in warm radiant amber light. Ocean waves break softly in the background, 8k masterwork.
+
+  - id: "05_sunburst_macro"
+    name_zh: "暮色凝珠·落日瞳光"
+    shot_type: "Extreme close-up macro / Saltwater & sunset eye"
+    steps: 45
+    prompt: >-
+      An extreme close-up intimate portrait of {SUBJECT} on the sunset beach.
+      The frame focuses on her flushed cheekbones, bare shoulders, and wet lips parted slightly in the sea air.
+      Tiny glistening salt crystals and droplets of seawater sparkle like diamonds across her nose and collarbone.
+      Her captivating dark eyes reflect the fiery gold and orange clouds of the horizon. Wet tendrils of hair cling to her neck.
+      Stunning macro detail, authentic skin pores, rich warm specular highlights, Hasselblad 100mm macro, 8k resolution.

@@ -1,0 +1,80 @@
+# ========================================================
+# 写真套图模板：新中式茶室·禅意茶烟 (Chinese Tearoom)
+# ========================================================
+id: chinese_tearoom
+name_zh: "新中式茶室·禅意茶烟写真套图"
+description: "5幕东方文雅禅意写真，融合素雅竹帘、黑胡桃茶台、紫砂茶烟、竹影斑驳与温润玉肌，尽显清冷脱俗与骨肉亭匀之美"
+scene_reference: "prompts/scene_chinese_tearoom.txt"
+
+# 默认基础参数
+default_params:
+  lora: "qwen2_1-femaledVaginus-nsfw-v1_3-fine_L22-31.safetensors"
+  lora_strength: 1.0
+  cfg: 2.5
+  steps: 45
+  sampler: "er_sde"
+  scheduler: "beta"
+  width: 1152
+  height: 1728
+  negative: "blurry, deformed, bad anatomy, bad hands, plastic skin, cartoon, 3d render, doll, extra limbs, watermark, text"
+
+# 写真分镜列表
+shots:
+  - id: "01_tea_kneel"
+    name_zh: "跪坐烹茶·竹帘漏光"
+    shot_type: "Low-angle medium shot / Elegant poise"
+    steps: 45
+    prompt: >-
+      A hyper-realistic low-angle photograph of {SUBJECT}. She is completely nude,
+      sitting gracefully on a woven tatami floor cushion next to a low black walnut tea table.
+      She is kneeling with her knees gently parted, one delicate hand resting on the edge of the
+      tea tray near a steaming purple clay teapot, her other hand placed softly on her thigh.
+      Warm diffuse light shines through a translucent rice-paper lattice screen behind her, casting
+      subtle bamboo leaf shadows across her porcelain skin. Gentle swirls of white tea steam rise into the air.
+      Authentic skin texture with delicate pores, serene expression with parted lips, 8k cinematic masterwork.
+
+  - id: "02_cushion_arch"
+    name_zh: "蒲团后倚·水蛇腰展"
+    shot_type: "Low-angle full-body / Sinuous tea-pavilion arch"
+    steps: 50
+    prompt: >-
+      A hyper-realistic full-body shot of {SUBJECT}. She is completely nude,
+      kneeling with parted knees on an embroidered meditation mat, leaning her torso gracefully backward
+      with both hands braced on the floor behind her. Her slender spine arches in an exquisite curve,
+      chest lifted toward the soft ceiling lanterns, highlighting her delicate ribs and toned abdomen.
+      The low perspective emphasizes the natural anatomical contours between her thighs against the woven rush matting.
+      Muted wood and bamboo tones, warm amber illumination, shallow depth of field, 8k resolution.
+
+  - id: "03_table_lean"
+    name_zh: "案前俯身·茶香浮动"
+    shot_type: "Side angle three-quarter / Intimate aroma"
+    steps: 45
+    prompt: >-
+      A hyper-realistic side three-quarter intimate shot of {SUBJECT}. She is completely nude,
+      leaning forward over the polished dark wood tea table, resting her elbows lightly on the table surface,
+      chin cupped in one hand as she observes the curling incense smoke from a celadon incense burner.
+      Her long raven hair spills forward over her bare shoulder, framing the hollow of her throat and delicate collarbones.
+      Soft side lighting from a silk lantern accentuates the glistening smooth contours of her waist and hip.
+      Cinematic Zen atmosphere, authentic skin micro-pores, masterwork portraiture.
+
+  - id: "04_screen_shadow"
+    name_zh: "屏风透影·侧卧横陈"
+    shot_type: "Wide horizontal recline / Translucent screen"
+    steps: 45
+    prompt: >-
+      A breathtaking wide shot of {SUBJECT}. She is completely nude, reclining languidly on her side
+      upon a wide bamboo daybed draped in ivory raw silk sheets. Behind her, a massive antique translucent
+      folding screen with ink-wash mountain paintings glows with soft backlit radiance, casting her silhouette
+      in delicate contrast. Her top leg is bent gently at the knee, resting naturally over the other.
+      Her gaze is quiet, introspective, and subtly alluring. Cinematic film lighting, ethereal tranquility, 8k.
+
+  - id: "05_tea_sip_macro"
+    name_zh: "微启朱唇·吹烟凝眸"
+    shot_type: "Extreme close-up macro / Incense & tea breath"
+    steps: 45
+    prompt: >-
+      An extreme close-up macro portrait of {SUBJECT}. The camera tightly frames her delicate flushed face,
+      collarbones, and bare shoulders. Her fingers gracefully cradle a small white porcelain teacup just below
+      her luscious parted lips as she gently blows away the faint wisp of steam. Her captivating dark eyes look
+      forward through the fine mist with an intoxicating, dreamy gaze. Fine peach fuzz, natural skin texture,
+      and dewy moisture visible in immaculate detail. Hasselblad 100mm f/2.0 portrait, 8k masterwork.

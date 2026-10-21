@@ -1,0 +1,74 @@
+# ========================================================
+# 写真套图模板：复古港风·暗红霓虹胶片 (Vintage Motel)
+# ========================================================
+id: vintage_motel
+name_zh: "复古港风·暗红霓虹胶片写真套图"
+description: "5幕90年代经典王家卫/港风胶片美学写真，暗红皮革沙发、百叶窗光斑、霓虹暗光与颗粒感私密抓拍，情绪张力拉满"
+scene_reference: "prompts/scene_vintage_motel.txt"
+
+# 默认基础参数
+default_params:
+  lora: "thesealpacas-nsfw-v2.safetensors"
+  lora_strength: 0.85
+  cfg: 4.0
+  steps: 45
+  sampler: "er_sde"
+  scheduler: "beta"
+  width: 1152
+  height: 1728
+  negative: "modern digital look, overly smooth plastic skin, 3D render, cartoon, bright sterile lighting, extra limbs, watermark"
+
+# 写真分镜列表
+shots:
+  - id: "01_leather_couch"
+    name_zh: "暗红沙发·慵懒横陈"
+    shot_type: "Couch-level candid / Wide uninhibited"
+    steps: 45
+    prompt: >-
+      A private grainy vintage 35mm photograph of {SUBJECT} lounging completely nude across a worn deep-red leather
+      couch in a dimly lit retro roadside motel room. The camera captures her at couch-cushion level: she is reclining
+      on her back with her head resting on one armrest, both legs lifted and draped wide over the backrest and opposite arm,
+      creating a wide, uninhibited open posture. The soft red glow of an exterior neon sign bleeds through dusty window blinds,
+      painting deep crimson shadows and warm amber highlights over her parted thighs and torso. Authentic film grain, 8k.
+
+  - id: "02_blinds_shadow"
+    name_zh: "百叶窗影·斑驳光条"
+    shot_type: "Medium shot / Slat shadow pattern"
+    steps: 45
+    prompt: >-
+      A moody cinematic photograph of {SUBJECT} leaning back against the wood-paneled motel wall beside closed Venetian blinds.
+      Neon streetlight outside slices through the horizontal slats, projecting striking alternating stripes of neon cyan
+      and shadow directly across her bare breasts, ribcage, and flat stomach. She holds one hand up in the light, fingers splayed,
+      gazing toward the window with a pensive, nostalgic gaze. Authentic analog grain, Kodak Portra 400 aesthetic, 8k.
+
+  - id: "03_floor_kneel"
+    name_zh: "地毯仰拍·撩发直视"
+    shot_type: "Ultra-low angle / Direct sultry gaze"
+    steps: 50
+    prompt: >-
+      An ultra-low angle floor-level photograph of {SUBJECT} kneeling on the retro shag carpet in the center of the motel room.
+      Both knees are spread wide, hands raised behind her head to lift her tousled voluminous hair, arching her back
+      and pushing her chest forward. The camera looks directly up at her daring, provocative gaze. A warm tungsten bedside lamp
+      casts deep sensual shadows carving out her hourglass silhouette and the natural curves of her hips. 35mm cinema snapshot.
+
+  - id: "04_bed_selfie"
+    name_zh: "凌乱床单·微醺俯卧"
+    shot_type: "High-angle bed shot / Intimate candid"
+    steps: 45
+    prompt: >-
+      A candid high-angle snapshot of {SUBJECT} sprawled lazily across rumpled floral motel bedsheets.
+      She is lying on her stomach, chin propped on her forearms, smiling mischievously at the camera with flushed cheeks
+      and parted lips. Her lower back dips gracefully while her hips and legs rest comfortably apart behind her.
+      A half-empty soda bottle and a vintage telephone sit on the nightstand in soft focus. Warm domestic lighting,
+      natural skin blemishes and folds, candid flash photography aesthetic, 8k resolution.
+
+  - id: "05_neon_glow_face"
+    name_zh: "霓虹半面·迷离红唇"
+    shot_type: "Extreme close-up macro / Dual neon split light"
+    steps: 45
+    prompt: >-
+      An extreme close-up intimate portrait of {SUBJECT} in the dark motel room.
+      Her face is lit by dramatic dual-color neon lighting: vibrant cherry-red on one side and moody turquoise on the other.
+      The tight frame reveals individual wet eyelashes, delicate skin pores, and deep burgundy lipstick on parted lips.
+      Her dark eyes are glistening with heavy emotion and dangerous allure. Fine 35mm film grain, cinematic bokeh,
+      Wong Kar-wai film lookbook aesthetic, 8k masterwork.

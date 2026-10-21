@@ -1,0 +1,78 @@
+# ========================================================
+# 写真套图模板：顶层豪宅·晨曦落地窗 (Penthouse Stretch)
+# ========================================================
+id: penthouse_stretch
+name_zh: "顶层豪宅·晨曦落地窗写真套图"
+description: "5幕都市轻奢现代高阶写真，清晨金色逆光薄雾、落地窗俯瞰天际线、深灰厚羊绒地毯、猫牛式拉伸与健美柔韧曲线"
+scene_reference: "prompts/scene_penthouse_stretch.txt"
+
+# 默认基础参数
+default_params:
+  lora: "qwen2_1-femaledVaginus-nsfw-v1_3-fine_L22-31.safetensors"
+  lora_strength: 1.0
+  cfg: 2.5
+  steps: 40
+  sampler: "er_sde"
+  scheduler: "beta"
+  width: 1152
+  height: 1728
+  negative: "blurry, deformed, bad anatomy, bad hands, plastic skin, cartoon, 3d render, doll, extra limbs, watermark, text"
+
+# 写真分镜列表
+shots:
+  - id: "01_window_silhouette"
+    name_zh: "落地窗前·逆光晨立"
+    shot_type: "Full-body standing / Golden rim light"
+    steps: 40
+    prompt: >-
+      A hyper-realistic full-body shot of {SUBJECT}. She is completely nude,
+      standing tall beside a vast floor-to-ceiling window in a luxury high-rise penthouse at dawn.
+      Golden morning sunlight streams from behind her, creating dramatic golden rim lighting around her
+      slender hourglass silhouette, highlighting the curve of her hips, narrow waist, and arched lower back.
+      One arm reaches up touching the transparent glass, while the expansive modern city skyline glows below
+      in soft morning mist. Authentic skin translucency, soft lens flare, fine peach fuzz, 8k cinematic masterwork.
+
+  - id: "02_carpet_cat_stretch"
+    name_zh: "绒毯猫趴·深凹脊背"
+    shot_type: "Medium-low rear angle / Cat-cow pose"
+    steps: 45
+    prompt: >-
+      A hyper-realistic medium-low angle shot of {SUBJECT} on a plush grey wool carpet in a sunlit modern penthouse.
+      The camera captures her in a deep feline crawling stretch (cat-cow pose) facing away at a three-quarter angle.
+      Her knees are parted on the carpet, hips lifted high, chest lowered close to the ground, with both arms outstretched
+      forward, fingers splayed. Her hair spills across her forearms, accentuating the deep dip of her lower spine
+      and the curve of her toned buttocks. Clear natural anatomical contours visible between her thighs under golden light.
+      Cinematic morning glow, raw physical grace, 8k resolution.
+
+  - id: "03_curtain_peek"
+    name_zh: "薄纱半掩·回眸展颜"
+    shot_type: "Medium shot / Translucent curtain play"
+    steps: 40
+    prompt: >-
+      A breathtaking medium shot of {SUBJECT}. She is completely nude, partially wrapped in a billowing sheer white
+      voile curtain by the expansive penthouse window. Her hands gather the lightweight fabric around her chest,
+      leaving her bare shoulders, collarbones, and one slender leg exposed. She turns her head back toward the camera
+      with a fresh, natural smile, sunlight sparkling in her eyes and catching loose flyaway strands of hair.
+      Bright airy contemporary aesthetic, high-key natural lighting, Hasselblad 85mm portrait, 8k.
+
+  - id: "04_sunlit_supine"
+    name_zh: "晨曦沐浴·仰卧舒肢"
+    shot_type: "High-angle flat lay / Sunbeam stretch"
+    steps: 45
+    prompt: >-
+      A bird's-eye high-angle shot looking down at {SUBJECT} lying supine across the plush grey carpet.
+      A brilliant diagonal shaft of golden morning sunlight illuminates her naked body from shoulders to thighs,
+      leaving the rest of the room in gentle ambient cool shadow. Her arms are tossed relaxed above her head,
+      one knee bent upward while the other leg stretches long. Her chest rises gently as she breathes in the fresh morning air.
+      Detailed skin micro-pores, natural abdominal contours, realistic specular skin sheen, 8k resolution.
+
+  - id: "05_golden_hour_face"
+    name_zh: "晨露微光·慵懒初醒"
+    shot_type: "Extreme close-up macro / Morning glow"
+    steps: 40
+    prompt: >-
+      An extreme close-up intimate portrait of {SUBJECT}. The shot captures her bare face, throat, and sculpted shoulder
+      in radiant morning side-light. Golden sunbeams illuminate individual eyelashes, fine skin pores, and soft peach fuzz
+      along her cheekbone. Her lips are bare and natural, slightly parted in a relaxed post-sleep expression, while her eyes
+      gleam with clarity and quiet warmth. Dreamy shallow depth of field with blurry high-rise window reflection behind.
+      Masterwork portrait photography, authentic human beauty, 8k resolution.

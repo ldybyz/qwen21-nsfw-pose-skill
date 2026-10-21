@@ -5,12 +5,17 @@
 
 ---
 
-## 一、现有模板一览
+## 一、现有模板一览 (共 7 套写真全集)
 
-| 模板标识 (ID) | 模板名称 | 分镜数量 | 适用风格 / 推荐角色 | 模板文件 |
-| :---: | :--- | :---: | :--- | :--- |
-| `chinese_canopy_bed` | **古典闺房·雕花拔步床写真** | 5 幕 | 古典神话妖姬、汉唐名媛、仙侠修仙 (如苏魅儿、杨玉瑶、赵凌燕) | [`chinese_canopy_bed.yaml`](chinese_canopy_bed.yaml) |
-| `onsen_hotspring` | **私汤温泉·水滑凝脂写真** | 5 幕 | 水雾湿身、凝脂白玉肌、纯欲与慵懒 (如苏魅儿、杨玉瑶、加藤樱、柳天仙) | [`onsen_hotspring.yaml`](onsen_hotspring.yaml) |
+| 模板标识 (ID) | 模板名称 | 分镜数量 | 核心风格 / 氛围 | 推荐适用角色 | 模板文件 |
+| :---: | :--- | :---: | :--- | :--- | :--- |
+| `chinese_canopy_bed` | **古典闺房·雕花拔步床写真** | 5 幕 | 东方温香软玉、红木雕花、烛影微汗、轻纱半掩 | 古典妖姬、神话志怪 (苏魅儿、杨玉瑶、赵凌燕、姬无双) | [`chinese_canopy_bed.yaml`](chinese_canopy_bed.yaml) |
+| `onsen_hotspring` | **私汤温泉·水滑凝脂写真** | 5 幕 | 露天私汤、水雾蒸腾、火山青石、湿身水光 | 凝脂白玉肌、纯欲灵动 (苏魅儿、杨玉瑶、加藤樱、柳天仙) | [`onsen_hotspring.yaml`](onsen_hotspring.yaml) |
+| `chinese_tearoom` | **新中式茶室·禅意茶烟写真** | 5 幕 | 竹帘漏光、紫砂茶烟、琴台蒲团、清冷脱俗与温润玉肌 | 古典才女、文人雅士、清冷神女 (李清照、林语婷、施浣纱、甄洛仙) | [`chinese_tearoom.yaml`](chinese_tearoom.yaml) |
+| `qipao_lounge` | **民国风华·暗光旗袍微解写真** | 5 幕 | 王家卫暗调、高开叉丝绸旗袍半褪、天鹅绒贵妃榻、老上海名伶 | 极致风情尤物、成熟名媛 (白曼清、邱曼妮、苏魅儿、柳如诗) | [`qipao_lounge.yaml`](qipao_lounge.yaml) |
+| `penthouse_stretch` | **顶层豪宅·晨曦落地窗写真** | 5 幕 | 都市天际线、清晨金色侧逆光薄雾、羊绒地毯、猫牛式拉伸 | 现代超模、高级骨相、健美线条 (杜雯、陈悦、裴智友、艾琳娜) | [`penthouse_stretch.yaml`](penthouse_stretch.yaml) |
+| `sunset_beach_rock` | **潮汐礁石·落日暮光写真** | 5 幕 | 琥珀晚霞落日熔金、潮汐浪沫微漾、湿发与微观盐晶水光 | 野性健康、阳光沙漏、异域神颜 (阿莱西亚、热依仙、芙蕾雅) | [`sunset_beach_rock.yaml`](sunset_beach_rock.yaml) |
+| `vintage_motel` | **复古港风·暗红霓虹胶片写真** | 5 幕 | 90s胶片电影质感、暗红皮革沙发、百叶窗光斑、微醺私密抓拍 | 港风神颜、复古浪漫 (邱曼妮、热依仙、克洛伊) | [`vintage_motel.yaml`](vintage_motel.yaml) |
 
 ---
 
@@ -44,7 +49,7 @@ shots:                               # 写真分镜列表 (可定义任意幕数
 ```
 
 ### 2. 核心插槽 `{SUBJECT}`
-提示词中的 `{SUBJECT}` 会被自动替换为目标人物卡中的 **“## 5. 模块化主体描述词块”**。
+提示词中的 `{SUBJECT}` 会被通用写真引擎自动替换为目标人物卡中的 **“## 5. 模块化主体描述词块”**。
 
 ---
 
@@ -54,12 +59,12 @@ shots:                               # 写真分镜列表 (可定义任意幕数
 # 1. 查看所有已注册的写真模板
 python scripts/run_photobook.py --list-templates
 
-# 2. 指定任意角色 + 任意模板进行预览 (Dry-run)
-python scripts/run_photobook.py --character su_meier --template onsen_hotspring --dry-run
+# 2. 为苏魅儿套用【新中式茶室】模板进行预览 (Dry-run)
+python scripts/run_photobook.py --character su_meier --template chinese_tearoom --dry-run
 
-# 3. 导出指定角色在指定模板下的全部提示词 txt 和 params.json
-python scripts/run_photobook.py --character su_meier --template onsen_hotspring --export-dir photobooks/su_meier_onsen
+# 3. 为苏魅儿套用【民国旗袍】模板并导出全部提示词 txt
+python scripts/run_photobook.py --character su_meier --template qipao_lounge --export-dir photobooks/su_meier_qipao
 
-# 4. 一键批量生成图片
-python scripts/run_photobook.py --character su_meier --template chinese_canopy_bed --run
+# 4. 为现代角色杜雯套用【顶层豪宅】模板并生成图片
+python scripts/run_photobook.py --character cn04_du_wen --template penthouse_stretch --run
 ```

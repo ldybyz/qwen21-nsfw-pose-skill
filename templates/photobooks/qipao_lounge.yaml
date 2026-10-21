@@ -1,0 +1,77 @@
+# ========================================================
+# 写真套图模板：民国风华·暗光旗袍微解 (Qipao Lounge)
+# ========================================================
+id: qipao_lounge
+name_zh: "民国风华·暗光旗袍微解写真套图"
+description: "5幕老上海海派名伶复古写真，王家卫暗调电影美学，高开叉丝绸旗袍半解半褪、天鹅绒贵妃榻、留声机与微醺光影，极致摇曳风情"
+scene_reference: "prompts/scene_qipao_lounge.txt"
+
+# 默认基础参数
+default_params:
+  lora: "thesealpacas-nsfw-v2.safetensors"
+  lora_strength: 0.85
+  cfg: 4.0
+  steps: 45
+  sampler: "er_sde"
+  scheduler: "beta"
+  width: 1152
+  height: 1728
+  negative: "modern digital render, 3D CGI, plastic oversmoothed skin, extra fingers, deformed limbs, blurry, bright sterile lighting, watermark"
+
+# 写真分镜列表
+shots:
+  - id: "01_chaise_lounge"
+    name_zh: "翡翠榻卧·旗袍侧解"
+    shot_type: "Low-angle medium shot / Silk parted"
+    steps: 45
+    prompt: >-
+      A glamorous candid vintage photograph of {SUBJECT} in a 1930s Shanghai Art Deco private salon.
+      She is reclining on a dark emerald velvet chaise lounge, wearing an emerald-green silk embroidered cheongsam (qipao)
+      that has been completely unbuttoned and parted down the side slits, pushed aside to fully reveal her nude torso,
+      slender waist, and parted thighs. The camera shoots from low carpet height: her legs are spread comfortably over
+      the plush velvet cushion, one bare foot touching the patterned Persian rug, framing her lower anatomy in pooled silk.
+      Warm golden glow from a fringed silk floor lamp, soft vintage grain, sleepy sultry gaze, 8k cinematic masterpiece.
+
+  - id: "02_gramophone_stand"
+    name_zh: "留声机旁·摇曳侧立"
+    shot_type: "Full-body three-quarter / Hourglass curve"
+    steps: 45
+    prompt: >-
+      A full-body atmospheric photograph of {SUBJECT} standing beside a polished brass antique gramophone.
+      Her dark emerald silk qipao is draped loosely off one bare shoulder, bunched at her hips to reveal her bare back,
+      sculpted waistline, and the fullness of her buttocks. She stands with her weight on one leg, hip popped out
+      in a classic retro hourglass curve, turning her head over her bare shoulder with a cigarette holder held
+      loosely between her fingers. Deep moody shadows, warm amber spotlighting, authentic retro film texture, 8k.
+
+  - id: "03_carpet_reclining"
+    name_zh: "地毯倚坐·微醺仰面"
+    shot_type: "Floor-level intimate shot / Relaxed posture"
+    steps: 50
+    prompt: >-
+      A floor-level intimate shot of {SUBJECT}. She has slipped down to the plush Persian carpet,
+      leaning her upper back against the base of the emerald chaise lounge, legs spread wide and relaxed on the carpet,
+      the unfastened silk qipao completely opened like a robe beneath her. Her head is tilted back against the velvet cushion
+      with eyes half-closed, lips slightly parted in a languid, intoxicated expression. A half-empty crystal wine glass
+      rests near her hand, casting ruby-red refractions across her smooth pale skin and inner thighs. 35mm retro aesthetic.
+
+  - id: "04_velvet_prone"
+    name_zh: "丝绒深陷·猫步俯卧"
+    shot_type: "Low rear angle / Silk draping"
+    steps: 45
+    prompt: >-
+      A low rear-angle shot of {SUBJECT} lying prone on the dark velvet chaise lounge.
+      Her hips are gently elevated with her lower back dipped, resting her chin on folded hands atop a satin bolster.
+      The rich emerald silk qipao is bunched across her lower back and waist, leaving her bare thighs and sculpted buttocks
+      prominently displayed under the dim amber glow of a nearby vintage table lamp. Wisps of smoke curl lazily toward
+      the patterned Art Deco ceiling. Intensely tactile skin texture, romantic film noir shadows, 8k resolution.
+
+  - id: "05_smoke_wine_macro"
+    name_zh: "吞吐烟云·红唇大特写"
+    shot_type: "Extreme close-up macro / Retro lips & eyes"
+    steps: 45
+    prompt: >-
+      An extreme close-up intimate portrait of {SUBJECT}. The shot focuses tightly on her face, classic 1930s finger-wave
+      glossy dark hairstyle, and bare flushed collarbone. Her plump lips are painted in rich velvety wine-red lipstick,
+      gently parted with faint cigarette smoke drifting past her full lips. Her heavy-lidded dark eyes gaze directly
+      into the camera with dangerous, fatalistic allure. Authentic fine skin pores, subtle beauty mark, rich specular highlights.
+      Hasselblad portraiture, cinematic vintage 1930s film palette, 8k masterwork.
