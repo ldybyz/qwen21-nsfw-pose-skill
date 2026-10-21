@@ -1,0 +1,78 @@
+# ========================================================
+# 写真套图模板：私汤温泉·水滑凝脂 (Onsen Hot Spring)
+# ========================================================
+id: onsen_hotspring
+name_zh: "私汤温泉·水滑凝脂写真套图"
+description: "5幕私密露天温泉写意写真，融合火山青石、蒸腾水雾、暮色竹林与湿身水光，展现女性晶莹滑腻之美"
+scene_reference: "prompts/scene_onsen_hotspring.txt"
+
+# 默认基础参数
+default_params:
+  lora: "qwen2_1-femaledVaginus-nsfw-v1_3-fine_L22-31.safetensors"
+  lora_strength: 1.0
+  cfg: 2.5
+  steps: 45
+  sampler: "er_sde"
+  scheduler: "beta"
+  width: 1152
+  height: 1728
+  negative: "blurry, deformed, bad anatomy, bad hands, plastic skin, cartoon, 3d render, doll, extra limbs, watermark, text"
+
+# 写真分镜列表
+shots:
+  - id: "01_poolside_sit"
+    name_zh: "池畔初浴·石阶微漾"
+    shot_type: "Medium wide shot / Water reflections"
+    steps: 45
+    prompt: >-
+      A cinematic medium shot of {SUBJECT}. She is completely nude, sitting delicately
+      on smooth dark volcanic rock steps at the edge of an outdoor hot spring bath at twilight.
+      Her lower legs are submerged in crystalline steaming water with subtle gentle ripples.
+      Steam drifts gracefully around her bare shoulders, with glistening water droplets clinging
+      to her collarbones and skin. Pine branches and cedar woodwork silhouette against a dusky violet sky.
+      Hasselblad portrait, warm lantern reflections on water, 8k resolution masterwork.
+
+  - id: "02_water_kneeling"
+    name_zh: "水中跪姿·水线轻漫"
+    shot_type: "Low-angle surface level / Sinuous contours"
+    steps: 45
+    prompt: >-
+      A hyper-realistic water-level shot of {SUBJECT}. She is completely nude,
+      kneeling in the steaming thermal pool with warm water reaching just below her navel.
+      Her hands rest softly behind her on the submerged stone ledge, chest tilted upward toward
+      the rising steam with a languid, serene expression. Water beads stream down her dewy skin,
+      creating luminous specular reflections under soft amber garden lanterns. Authentic wet skin texture,
+      natural anatomical contours, 8k cinematic masterwork.
+
+  - id: "03_edge_lean_rear"
+    name_zh: "倚石俯身·背部水光"
+    shot_type: "Rear three-quarter / Arched spine"
+    steps: 50
+    prompt: >-
+      A hyper-realistic low rear three-quarter view of {SUBJECT}. She is completely nude,
+      leaning forward over the flat rim of a moss-dappled hot spring boulder, forearms resting on the cool stone,
+      back elegantly arched, waist indented, and voluptuous hips lifted slightly above the shimmering water surface.
+      Damp strands of hair stick to her bare back, highlighted by golden rim-light through thermal steam.
+      Cinematic spa aesthetic, delicate water droplets, 8k resolution.
+
+  - id: "04_wet_hair_wring"
+    name_zh: "出水芙蓉·仰面挽发"
+    shot_type: "Medium close-up / Wet hair action"
+    steps: 45
+    prompt: >-
+      A breathtaking medium shot of {SUBJECT}. She is completely nude, standing half-submerged in the onsen pool,
+      arms raised as her slender fingers wring water from her drenched dark hair behind her neck.
+      Her face is tilted upward with eyes closed in pure relaxation, water cascading down her throat,
+      sculpted collarbones, and chest. Warm steam envelops the frame, soft bokeh lanterns in the background.
+      Pristine photography, dewy micro-pores, wet glistening skin, 8k resolution.
+
+  - id: "05_steamy_close_up"
+    name_zh: "雾中凝睇·微汗水吻"
+    shot_type: "Extreme close-up macro / Steamy intimacy"
+    steps: 45
+    prompt: >-
+      An extreme close-up intimate portrait of {SUBJECT} in an outdoor hot spring.
+      The lens focuses closely on her flushed cheeks, parted dewy lips, and captivating seductive eyes gazing
+      through gentle veils of rising steam. Wet locks of hair frame her face and cling to her damp neck.
+      Beads of condensation and fine sweat glisten with pristine clarity under warm lantern illumination.
+      Shallow depth of field with soft turquoise and amber water bokeh, Hasselblad 100mm macro, 8k masterwork.

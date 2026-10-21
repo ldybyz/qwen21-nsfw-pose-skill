@@ -1,0 +1,82 @@
+# ========================================================
+# 写真套图模板：古典闺房·雕花拔步床 (Chinese Canopy Bed)
+# ========================================================
+id: chinese_canopy_bed
+name_zh: "古典闺房·雕花拔步床写真套图"
+description: "5幕东方温香软玉寝殿写真，融合红木雕花、烛影微汗、轻纱半掩与慵懒姿态，最适合古典妖姬、名媛与神话角色"
+scene_reference: "prompts/scene_chinese_canopy_bed.txt"
+
+# 默认基础参数（当人物卡中未定义时使用）
+default_params:
+  lora: "thesealpacas-nsfw-v2.safetensors"
+  lora_strength: 0.85
+  cfg: 4.0
+  steps: 45
+  sampler: "er_sde"
+  scheduler: "beta"
+  width: 1152
+  height: 1728
+  negative: "blurry, deformed, bad anatomy, bad hands, plastic skin, cartoon, 3d render, doll, extra limbs, watermark, text"
+
+# 写真分镜列表（{SUBJECT} 为人物卡第5节模块化描述词的插槽）
+shots:
+  - id: "01_side_peeking"
+    name_zh: "纱幔半掩·侧卧回眸"
+    shot_type: "Medium shot / Teasing glance"
+    steps: 45
+    prompt: >-
+      A cinematic medium-shot portrait of {SUBJECT}. She is completely nude,
+      reclining languidly on her side upon luxurious crimson silk bedding inside an antique
+      dark rosewood Chinese canopy bed. One delicate hand holds aside a translucent scarlet silk
+      gauze curtain, casting soft sheer shadows across her bare torso. Her head turns over her bare
+      shoulder to gaze directly at the camera with a dangerously seductive, teasing smile. Warm golden
+      lantern light flickers in the background, illuminating fine skin textures, collarbones, and delicate
+      curves. Hasselblad 85mm portrait, shallow depth of field, rich oriental boudoir atmosphere, 8k resolution masterwork.
+
+  - id: "02_arched_kneel"
+    name_zh: "跪坐后撑·水蛇腰挺立"
+    shot_type: "Low-angle full-body / Sinuous arch"
+    steps: 50
+    prompt: >-
+      A hyper-realistic full-body, low-angle shot of {SUBJECT}. She is completely nude,
+      kneeling with her knees spread apart on an antique woven bamboo mat atop a massive dark rosewood
+      Chinese canopy bed. Her hands are braced behind her on silk bolsters, chest pushed forward and spine
+      arched in a breathtaking flexible curve. Amber candle flame from a carved wooden nightstand sculpts her
+      ribs, glossy skin highlights, and the natural anatomical contours between her parted thighs. Sandalwood
+      incense smoke curls softly in the air. Masterwork, cinematic lighting, raw feminine magnetism, 8k resolution.
+
+  - id: "03_cat_stretch"
+    name_zh: "榻上俯卧·猫式伸展"
+    shot_type: "Low rear three-quarter / Hourglass curve"
+    steps: 45
+    prompt: >-
+      A hyper-realistic low rear three-quarter wide shot of {SUBJECT}. She is completely nude,
+      posing in a flexible prone cat-stretch posture on soft dark red silk sheets atop an antique Chinese
+      canopy bed, forearms resting on an embroidered velvet pillow, lower back deeply dipped and hips lifted
+      high. Warm lantern rim-light defines the glistening curve of her spine, buttocks, and the back of her
+      thighs, with lazy wisps of sandalwood incense drifting through the intricate lattice woodwork. Detailed
+      authentic skin pores, delicate sweat sheen, Hasselblad portraiture, cinematic boudoir lookbook, 8k resolution.
+
+  - id: "04_topdown_silk"
+    name_zh: "仰卧绸缎·指尖绕发"
+    shot_type: "Bird's-eye flat lay / Sensual stretch"
+    steps: 45
+    prompt: >-
+      A breathtaking bird's-eye high-angle flat lay shot of {SUBJECT}. She is completely nude,
+      lying on her back on an expansive mattress of an antique dark rosewood Chinese canopy bed. Her arms are
+      raised gracefully above her head with slender fingers tangled in her loose hair, one leg stretched long
+      while the other knee is bent outward in a relaxed, sensual stretch. Overhead warm golden lantern glow
+      filters through thin red canopy curtains, highlighting the soft slope of her bosom, flat stomach, and
+      smooth glowing porcelain skin with micro-specular highlights. Ethereal, intimate bedroom lookbook aesthetic,
+      masterwork, 8k resolution.
+
+  - id: "05_macro_intimate"
+    name_zh: "烛火微汗·咬唇摄魂"
+    shot_type: "Extreme close-up macro / Bedroom eyes"
+    steps: 45
+    prompt: >-
+      An extreme close-up intimate portrait of {SUBJECT}. The frame captures her flushed face,
+      bare shoulders, and sculpted collarbone in crisp macro detail. Authentic skin pores, fine natural
+      texture, and glistening beads of perspiration glow warmly under soft flickering candlelight. Intimate
+      shallow depth of field with blurry wooden canopy bed details in background. Hasselblad 100mm f/2.0 macro
+      portrait, masterwork boudoir photography, 8k resolution.
