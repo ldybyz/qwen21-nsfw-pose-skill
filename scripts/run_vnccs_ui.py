@@ -245,8 +245,25 @@ def main() -> int:
         except Exception:
             pass
         try:
-            page.goto(URL, timeout=30000)
-            settle(page, 4000)
+            page.goto(URL, timeout=45000)
+            print(f"[vnccs-ui] waiting for ComfyUI web frontend to initialize at {URL}...")
+            try:
+                page.wait_for_function("""() => {
+                    if (window.app && typeof window.app.loadGraphData === 'function') return true;
+                    if (window.comfyAPI && window.comfyAPI.app && window.comfyAPI.app.app && typeof window.comfyAPI.app.app.loadGraphData === 'function') {
+                        window.app = window.comfyAPI.app.app;
+                        return true;
+                    }
+                    return false;
+                }""", timeout=60000)
+            except Exception as wait_err:
+                print(f"[vnccs-ui] ERROR: Timed out waiting for ComfyUI web app to initialize: {wait_err}", file=sys.stderr)
+                if logs:
+                    print("[vnccs-ui] Browser console / error logs tail:", file=sys.stderr)
+                    for log_line in logs[-15:]:
+                        print(f"    {log_line}", file=sys.stderr)
+                return 2
+            settle(page, 2000)
             page.evaluate("(wf) => window.app.loadGraphData(wf)", wf)
             settle(page, 3000)
             # drop QwenImage21Cache (aimdo error on this box) and wire LoRA -> KSampler
@@ -279,16 +296,24 @@ def main() -> int:
             }""", f"poselab/vnccs_ui_doll_{tag}_{stamp}")
             # confirm widgets landed
             info = page.evaluate("""() => {
-                const g = window.app.graph._nodes;
+                const g = window.app.graph._nodes || [];
                 const li = g.find(n => n.type === 'LoadImage');
                 const ps = g.find(n => n.type === 'VNCCS_PoseStudio');
+                const liWidget = li && li.widgets ? li.widgets.find(w => w && w.name === 'image') : null;
+                const psWidget = ps && ps.widgets ? ps.widgets.find(w => w && w.name === 'pose_data') : null;
                 return {
                     nodes: g.length,
-                    loadImage: li ? li.widgets.find(w=>w.name==='image').value : null,
-                    poseLen: ps ? String(ps.widgets.find(w=>w.name==='pose_data').value).length : null,
+                    hasVnccsNode: !!ps,
+                    loadImage: liWidget ? liWidget.value : null,
+                    poseLen: psWidget && psWidget.value ? String(psWidget.value).length : null,
                 };
             }""")
             print(f"[vnccs-ui] graph: {info}")
+            if not info.get("hasVnccsNode") or info.get("poseLen") is None:
+                print("ERROR: VNCCS_PoseStudio custom node is missing or not loaded in ComfyUI!\n"
+                      "  -> Please install it: git clone https://github.com/AHEKOT/ComfyUI_VNCCS_Utils custom_nodes/ComfyUI_VNCCS_Utils\n"
+                      "  -> And restart ComfyUI once.", file=sys.stderr)
+                return 2
             page.screenshot(path=str(out_dir / f"_ui_{tag}_loaded.png"))
 
             t0 = time.time()

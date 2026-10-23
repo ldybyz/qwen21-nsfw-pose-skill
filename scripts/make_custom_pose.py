@@ -103,7 +103,14 @@ def main() -> int:
         try:
             page.set_viewport_size({"width": 1920, "height": 1080})
             page.goto(URL, timeout=30000)
-            page.wait_for_timeout(5000)
+            page.wait_for_function("""() => {
+                if (window.app && typeof window.app.loadGraphData === 'function') return true;
+                if (window.comfyAPI && window.comfyAPI.app && window.comfyAPI.app.app && typeof window.comfyAPI.app.app.loadGraphData === 'function') {
+                    window.app = window.comfyAPI.app.app;
+                    return true;
+                }
+                return false;
+            }""", timeout=60000)
             page.evaluate("(wf) => window.app.loadGraphData(wf)", wf)
             page.wait_for_timeout(6000)
             res = page.evaluate("""async ([entry, rotations, save]) => {
