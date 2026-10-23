@@ -1,0 +1,85 @@
+# ========================================================
+# 写真套图模板：3D姿态精准控制·多幕写真套图 (3D PoseStudio Master)
+# ========================================================
+# 本模板同时支持【方式 1：T2I 文生图】与【方式 2：VNCCS 3D 骨骼控制】
+# 当通过方式 2 运行时，系统将直接调用 pose 字段绑定的 3D 骨骼文件；
+# 当通过方式 1 运行时，系统将无缝调用 prompt 进行高密度文本生图。
+# ========================================================
+id: pose3d_studio
+name_zh: "3D骨骼精准控制·极度舒展写真套图"
+description: "5幕高难度肢体写真，显式绑定 pose_library 3D 人体骨骼模型，兼具方式1(文本)与方式2(3D骨骼)全兼容出图"
+scene_reference: "prompts/scene_penthouse_stretch.txt"
+
+# 默认基础参数（当人物卡中未定义时使用）
+default_params:
+  lora: "qwen2_1-femaledVaginus-nsfw-v1_3-fine_L22-31.safetensors"
+  lora_strength: 1.0
+  cfg: 3.5
+  steps: 45
+  sampler: "er_sde"
+  scheduler: "beta"
+  width: 1152
+  height: 1728
+  negative: "blurry, deformed, bad anatomy, bad hands, plastic skin, cartoon, 3d render, doll, extra limbs, watermark, text"
+
+# 写真分镜列表（含 3D 骨骼 pose 绑定 与 {SUBJECT} 文本插槽）
+shots:
+  - id: "01_kneeling_leaning_back"
+    name_zh: "跪姿后倾·极度腰弓"
+    shot_type: "Low-angle medium shot / Arched spine"
+    pose: "Kneeling Leaning Back"
+    steps: 45
+    prompt: >-
+      A cinematic medium shot of {SUBJECT}. She is completely nude, in a dynamic kneeling leaning back
+      posture with knees spread apart, both hands braced behind her supporting her deeply arched flexible
+      spine. Chest thrust proudly forward, head tilted back, soft warm rim lighting carving the muscular
+      and feminine contours along her ribs, torso, and parted thighs. Hasselblad 85mm portrait, authentic
+      skin pores, glistening perspiration sheen, 8k resolution masterwork.
+
+  - id: "02_squatting_legs_spread"
+    name_zh: "深蹲开腿·力量张力"
+    shot_type: "Full-body frontal wide / Bold stance"
+    pose: "Squatting Legs Spread"
+    steps: 50
+    prompt: >-
+      A hyper-realistic full-body shot of {SUBJECT}. She is completely nude, in a powerful squatting
+      legs spread posture, balanced steadily on balls of feet, hands resting naturally on her knees or
+      supporting her core. Crisp side lighting highlighting the toned contours of her calves, inner thighs,
+      and delicate anatomical silhouette. Confident captivating gaze directly at the camera, luxurious
+      atmosphere, clean background, authentic skin texture with microscopic pores, 8k resolution.
+
+  - id: "03_crawling_rear"
+    name_zh: "榻上俯爬·三维背影"
+    shot_type: "Low rear three-quarter / Curvaceous spine"
+    pose: "Crawling rear"
+    steps: 45
+    prompt: >-
+      A hyper-realistic low rear three-quarter view of {SUBJECT}. She is completely nude, in a supple
+      crawling posture on all fours, forearms resting flat ahead, back gracefully dipped and hips raised
+      high in an alluring natural curve. Golden rim-light accentuating the glistening line of her spine,
+      toned glutes, and the back of her thighs. Her head glances back over one bare shoulder with a subtle
+      magnetic tease. Intimate atmosphere, authentic skin micro-details, 8k resolution.
+
+  - id: "04_laying_knees_up"
+    name_zh: "仰卧屈膝·光影雕塑"
+    shot_type: "High-angle flat lay / Intimate lines"
+    pose: "Laying Back Knees Up Together"
+    steps: 45
+    prompt: >-
+      An overhead high-angle intimate view of {SUBJECT}. She is completely nude, lying on her back upon
+      a smooth minimalist surface with knees bent upwards together. Her arms are relaxed beside her head,
+      fingers resting gently on her tousled hair. Overhead soft diffuse light caressing the gentle curve of
+      her bosom, flat stomach with subtle definition, and smooth glowing porcelain skin with micro-specular
+      highlights. Intimate editorial lookbook aesthetic, 8k resolution masterwork.
+
+  - id: "05_bent_toe_touch"
+    name_zh: "下腰触足·极度拉伸"
+    shot_type: "Full-body profile / Extreme flexibility"
+    pose: "Bent over toe touch profile"
+    steps: 45
+    prompt: >-
+      A full-body side profile shot of {SUBJECT}. She is completely nude, demonstrating extreme hamstring
+      and spinal flexibility in a standing bent over toe touch posture, torso folded forward against straight
+      slender legs, fingertips touching the floor. Clean cinematic gallery lighting sculpting the sleek curve
+      of her back, toned glutes, and elongated legs. Natural female anatomy, authentic human skin texture,
+      masterwork photography, 8k resolution.

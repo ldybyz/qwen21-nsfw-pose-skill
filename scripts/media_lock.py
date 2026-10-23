@@ -17,12 +17,24 @@ Usage:
 from __future__ import annotations
 
 import contextlib
-import fcntl
 import os
+import sys
+import tempfile
 import time
 from pathlib import Path
 
-LOCK_FILE = Path(os.environ.get("MEDIA_LOCK_FILE", "/tmp/media-task.lock"))
+try:
+    import fcntl
+except ImportError:
+    fcntl = None
+
+try:
+    import msvcrt
+except ImportError:
+    msvcrt = None
+
+_default_lock = Path("/tmp/media-task.lock") if sys.platform != "win32" else Path(tempfile.gettempdir()) / "media-task.lock"
+LOCK_FILE = Path(os.environ.get("MEDIA_LOCK_FILE", _default_lock))
 
 
 class MediaLockError(RuntimeError):
@@ -42,11 +54,15 @@ def media_lock(exclusive: bool, wait_timeout: int = 3600):
     mode = os.O_RDWR | os.O_CREAT
     f = os.open(LOCK_FILE, mode, 0o644)
     try:
-        flags = fcntl.LOCK_EX if exclusive else fcntl.LOCK_SH
         deadline = time.monotonic() + wait_timeout
         while True:
             try:
-                fcntl.flock(f, flags | fcntl.LOCK_NB)
+                if fcntl is not None:
+                    flags = fcntl.LOCK_EX if exclusive else fcntl.LOCK_SH
+                    fcntl.flock(f, flags | fcntl.LOCK_NB)
+                elif msvcrt is not None:
+                    os.lseek(f, 0, os.SEEK_SET)
+                    msvcrt.locking(f, msvcrt.LK_NBLCK, 1)
                 break
             except OSError:
                 if time.monotonic() >= deadline:
@@ -57,7 +73,17 @@ def media_lock(exclusive: bool, wait_timeout: int = 3600):
                 time.sleep(2)
         yield
     finally:
-        fcntl.flock(f, fcntl.LOCK_UN)
+        if fcntl is not None:
+            try:
+                fcntl.flock(f, fcntl.LOCK_UN)
+            except OSError:
+                pass
+        elif msvcrt is not None:
+            try:
+                os.lseek(f, 0, os.SEEK_SET)
+                msvcrt.locking(f, msvcrt.LK_UNLCK, 1)
+            except OSError:
+                pass
         os.close(f)
 
 

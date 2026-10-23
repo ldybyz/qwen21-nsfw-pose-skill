@@ -5,10 +5,11 @@
 
 ---
 
-## 一、现有模板一览 (共 7 套写真全集)
+## 一、现有模板一览 (共 8 套写真全集)
 
 | 模板标识 (ID) | 模板名称 | 分镜数量 | 核心风格 / 氛围 | 推荐适用角色 | 模板文件 |
 | :---: | :--- | :---: | :--- | :--- | :--- |
+| `pose3d_studio` | **3D骨骼精准控制·极度舒展写真** | 5 幕 | 方式2(3D骨骼)与方式1(T2I)双兼容，高难度跪坐后仰、开腿深蹲、俯爬与下腰触足 | 新中式名媛(苏青荷 CN-19)、健美超模(韩敏智 EA-05) | [`pose3d_studio.yaml`](pose3d_studio.yaml) |
 | `chinese_canopy_bed` | **古典闺房·雕花拔步床写真** | 5 幕 | 东方温香软玉、红木雕花、烛影微汗、轻纱半掩 | 古典妖姬、神话志怪 (苏魅儿、杨玉瑶、赵凌燕、姬无双) | [`chinese_canopy_bed.yaml`](chinese_canopy_bed.yaml) |
 | `onsen_hotspring` | **私汤温泉·水滑凝脂写真** | 5 幕 | 露天私汤、水雾蒸腾、火山青石、湿身水光 | 凝脂白玉肌、纯欲灵动 (苏魅儿、杨玉瑶、加藤樱、柳天仙) | [`onsen_hotspring.yaml`](onsen_hotspring.yaml) |
 | `chinese_tearoom` | **新中式茶室·禅意茶烟写真** | 5 幕 | 竹帘漏光、紫砂茶烟、琴台蒲团、清冷脱俗与温润玉肌 | 古典才女、文人雅士、清冷神女 (李清照、林语婷、施浣纱、甄洛仙) | [`chinese_tearoom.yaml`](chinese_tearoom.yaml) |
@@ -43,28 +44,50 @@ shots:                               # 写真分镜列表 (可定义任意幕数
   - id: "01_shot_name"               # 分镜标识
     name_zh: "分镜中文名"
     shot_type: "镜头与景别类型"
+    pose: "Kneeling Leaning Back"    # 可选：方式2专用，直接绑定 pose_library 3D骨骼姿势！
     steps: 45                        # 该分镜专属步数 (可选)
     prompt: >-                       # 提示词，必须包含 {SUBJECT} 占位插槽
       A cinematic medium shot of {SUBJECT}. She is completely nude, posing in ...
 ```
 
-### 2. 核心插槽 `{SUBJECT}`
-提示词中的 `{SUBJECT}` 会被通用写真引擎自动替换为目标人物卡中的 **“## 5. 模块化主体描述词块”**。
+### 2. 核心插槽 `{SUBJECT}` 与 3D 姿势 `pose`
+- `{SUBJECT}` 会被通用写真引擎自动替换为目标人物卡中的 **“## 5. 模块化主体描述词块”**。
+- `pose` 为 **方式 2 (3D 骨骼控姿)** 的挂载点，填入 `pose_library` 里的文件名（如 `Kneeling Leaning Back`、`Squatting Legs Spread`）。当系统执行方式 2 时会自动调用 3D 骨骼；在方式 1 时依然以高质量 `prompt` 进行纯文本渲染。
 
 ---
 
-## 三、命令行使用方式
+## 三、使用方式
 
+### 1. 命令行调用 (CLI)
 ```powershell
-# 1. 查看所有已注册的写真模板
+# 1. 查看所有已注册的写真模板（自动标注是否含3D骨骼绑定）
 python scripts/run_photobook.py --list-templates
 
-# 2. 为苏魅儿套用【新中式茶室】模板进行预览 (Dry-run)
-python scripts/run_photobook.py --character su_meier --template chinese_tearoom --dry-run
+# 2. 采用新模板为新角色【苏青荷】导出 3D 骨骼写真配置
+python scripts/run_photobook.py --character cn19_su_qinghe --template pose3d_studio --export-dir photobooks/su_qinghe_pose3d
 
-# 3. 为苏魅儿套用【民国旗袍】模板并导出全部提示词 txt
-python scripts/run_photobook.py --character su_meier --template qipao_lounge --export-dir photobooks/su_meier_qipao
+# 3. 采用新模板为新角色【韩敏智】执行 3D 姿态控制出图
+python scripts/run_photobook.py --character ea05_han_minji --template pose3d_studio --run
 
-# 4. 为现代角色杜雯套用【顶层豪宅】模板并生成图片
-python scripts/run_photobook.py --character cn04_du_wen --template penthouse_stretch --run
+# 4. 强制指定运行模式 (--mode auto | t2i | vnccs)
+# 强制使用方式 1 (纯T2I文本)：
+python scripts/run_photobook.py --character cn19_su_qinghe --template pose3d_studio --mode t2i --run
+# 强制使用方式 2 (VNCCS 3D骨骼)：
+python scripts/run_photobook.py --character ea05_han_minji --template pose3d_studio --mode vnccs --run
+```
+
+### 2. Python 脚本 / Jupyter Notebook 调用
+写真引擎已封装为标准方法 `execute_photobook`，可直接在 Python 脚本或 Notebook Cell 中调用：
+```python
+from scripts.run_photobook import execute_photobook
+
+# 在 Notebook 中一键执行双模式写真
+result = execute_photobook(
+    character="cn19_su_qinghe",
+    template="pose3d_studio",
+    mode="auto",       # 'auto' / 't2i' / 'vnccs'
+    export_dir="photobooks/su_qinghe_pose3d",
+    run=False,         # 设为 True 直接提交 ComfyUI 推理
+    dry_run=True,
+)
 ```

@@ -169,9 +169,200 @@ def parse_character_card(path: Path) -> Dict[str, Any]:
     }
 
 
+def execute_photobook(
+    character: str,
+    template: str = "chinese_canopy_bed",
+    mode: str = "auto",
+    run: bool = False,
+    dry_run: bool = False,
+    export_dir: Optional[str] = None,
+    output_dir: Optional[str] = None,
+    char_image: Optional[str] = None,
+    seed: Optional[int] = None,
+    cfg: Optional[float] = None,
+    lora: Optional[str] = None,
+    lora_strength: Optional[float] = None,
+) -> Dict[str, Any]:
+    """Execute or export a photobook suite, supporting both Mode 1 (T2I) and Mode 2 (VNCCS 3D Pose).
+
+    This function can be imported and executed in Jupyter notebooks, scripts, or the CLI.
+    """
+    # 1. Load template YAML
+    template_data = load_template(template)
+    template_id = template_data.get("id", Path(template).stem)
+    template_name = template_data.get("name_zh", template_id)
+    template_shots = template_data.get("shots", [])
+    default_params = template_data.get("default_params", {})
+
+    if not template_shots:
+        raise ValueError(f"Template '{template_id}' does not contain any 'shots' definition.")
+
+    # 2. Load Character Card
+    char_path = find_character_file(character)
+    char_info = parse_character_card(char_path)
+
+    # 3. Determine Character Reference Image for Mode 2 (VNCCS)
+    default_ref_img = _PKG_DIR / "references" / "src_standing.png"
+    char_img_path = Path(char_image) if char_image else default_ref_img
+
+    # Blend character params with template default params
+    # Priority: Function argument > Character card params > Template default params
+    active_lora = lora or char_info.get("lora") or default_params.get("lora", "thesealpacas-nsfw-v2.safetensors")
+    active_lora_strength = (
+        lora_strength
+        if lora_strength is not None
+        else char_info.get("lora_strength", default_params.get("lora_strength", 0.85))
+    )
+    active_cfg = cfg if cfg is not None else char_info.get("cfg", default_params.get("cfg", 4.0))
+    active_seed = seed if seed is not None else char_info.get("seed", 80964)
+    sampler = char_info.get("sampler") or default_params.get("sampler", "er_sde")
+    scheduler = char_info.get("scheduler") or default_params.get("scheduler", "beta")
+    width = char_info.get("width") or default_params.get("width", 1152)
+    height = char_info.get("height") or default_params.get("height", 1728)
+
+    out_img_dir = Path(output_dir or f"outputs/photobooks/{char_info['char_id']}_{template_id}")
+
+    print(f"\n🎭 ========================================================")
+    print(f" 角色写真集引擎: [{char_info['char_name']}] ({char_info['char_id']})")
+    print(f" 套用模板: {template_name} [{template_id}] ({len(template_shots)} 幕分镜)")
+    print(f" 运行模式策略: {mode.upper()} (方式1: T2I文生图 | 方式2: VNCCS 3D骨骼控姿)")
+    print(f" 参数基准: Seed={active_seed}, CFG={active_cfg}, LoRA={active_lora}@{active_lora_strength}")
+    print(f"========================================================\n")
+
+    export_path = Path(export_dir) if export_dir else None
+    if export_path:
+        export_path.mkdir(parents=True, exist_ok=True)
+        print(f"📁 导出提示词目录: {export_path.resolve()}\n")
+
+    executed_shots = []
+
+    for i, shot in enumerate(template_shots, start=1):
+        # Slot filling: replace {SUBJECT} with character's Section 5 modular block
+        raw_prompt = shot["prompt"]
+        pos_prompt = raw_prompt.replace("{SUBJECT}", char_info["subject_prompt"]).strip()
+        neg_prompt = shot.get("negative") or default_params.get(
+            "negative",
+            "blurry, deformed, bad anatomy, bad hands, plastic skin, cartoon, 3d render, doll, extra limbs, watermark, text"
+        )
+        shot_id = shot["id"]
+        shot_name = shot.get("name_zh", shot_id)
+        shot_type = shot.get("shot_type", "")
+        steps = shot.get("steps", default_params.get("steps", 45))
+        pose_preset = shot.get("pose")
+
+        # Determine route for this shot: "vnccs" (方式 2) or "t2i" (方式 1)
+        if mode == "t2i":
+            shot_mode = "t2i"
+        elif mode == "vnccs":
+            shot_mode = "vnccs" if pose_preset else "t2i"
+        else:  # auto
+            shot_mode = "vnccs" if pose_preset else "t2i"
+
+        print(f"[{i}/{len(template_shots)}] 分镜: {shot_name} ({shot_type})")
+        print(f"    标识: {shot_id}")
+        if shot_mode == "vnccs":
+            print(f"    🎮 控姿方式: 【方式 2 · VNCCS 3D 骨骼控制】 (pose='{pose_preset}')")
+        else:
+            print(f"    ✍️ 控姿方式: 【方式 1 · T2I 文本高密度生图】")
+
+        if dry_run:
+            print(f"    Positive Prompt:\n    {pos_prompt[:180]}...")
+            print(f"    Negative Prompt:\n    {neg_prompt}\n")
+
+        # Export txt & params.json
+        if export_path:
+            txt_file = export_path / f"{shot_id}.txt"
+            full_txt = f"{pos_prompt}\n\n[negative] {neg_prompt}\n"
+            txt_file.write_text(full_txt, encoding="utf-8")
+
+            param_file = export_path / f"{shot_id}.params.json"
+            param_data = {
+                "id": shot_id,
+                "name_zh": shot_name,
+                "mode": shot_mode,
+                "pose": pose_preset,
+                "steps": steps,
+                "cfg": active_cfg,
+                "sampler": sampler,
+                "scheduler": scheduler,
+                "seed": active_seed,
+                "width": width,
+                "height": height,
+                "lora": active_lora,
+                "lora_strength": active_lora_strength,
+                "description": f"{char_info['char_name']}写真第{i}幕：{shot_name}",
+            }
+            param_file.write_text(json.dumps(param_data, indent=2, ensure_ascii=False), encoding="utf-8")
+            print(f"    -> 已保存: {txt_file.name} & {param_file.name}")
+
+        # Run ComfyUI execution if requested
+        if run:
+            out_img_dir.mkdir(parents=True, exist_ok=True)
+            if shot_mode == "vnccs":
+                print(f"    🚀 正在提交 VNCCS 3D 姿态推理 (pose='{pose_preset}', ref={char_img_path.name})...")
+                cmd = [
+                    sys.executable,
+                    str(_PKG_DIR / "scripts" / "run_vnccs_ui.py"),
+                    "--pose", str(pose_preset),
+                    "--char", str(char_img_path),
+                    "--prompt", pos_prompt,
+                    "--out", str(out_img_dir),
+                ]
+                res = subprocess.run(cmd)
+                if res.returncode == 0:
+                    print(f"    ✅ 完成 3D 姿态出图: {out_img_dir}")
+                else:
+                    print(f"    ⚠️ VNCCS 3D 执行返回码 {res.returncode}，尝试退回方式 1 (T2I) 出图...")
+                    shot_mode = "t2i"
+
+            if shot_mode == "t2i":
+                out_img_file = out_img_dir / f"{shot_id}.png"
+                cmd = [
+                    sys.executable,
+                    str(_PKG_DIR / "scripts" / "qwen_pose_test.py"),
+                    "--mode", "t2i",
+                    "--name", f"{char_info['char_id']}_{template_id}_{shot_id}",
+                    "--prompt", pos_prompt,
+                    "--negative", neg_prompt,
+                    "--seed", str(active_seed),
+                    "--steps", str(steps),
+                    "--cfg", str(active_cfg),
+                    "--sampler", sampler,
+                    "--scheduler", scheduler,
+                    "--width", str(width),
+                    "--height", str(height),
+                    "--lora", active_lora,
+                    "--lora-strength", str(active_lora_strength),
+                    "--out", str(out_img_file),
+                ]
+                print(f"    🚀 正在提交 ComfyUI T2I 推理...")
+                res = subprocess.run(cmd)
+                if res.returncode == 0:
+                    print(f"    ✅ 完成 T2I 出图: {out_img_file}")
+                else:
+                    print(f"    ❌ 失败，返回码: {res.returncode}")
+
+        executed_shots.append({
+            "id": shot_id,
+            "name_zh": shot_name,
+            "mode": shot_mode,
+            "pose": pose_preset,
+            "prompt": pos_prompt,
+        })
+
+    print("\n✨ 全部处理完毕！")
+    return {
+        "character": char_info,
+        "template": template_data,
+        "shots": executed_shots,
+        "export_dir": str(export_path) if export_path else None,
+        "output_dir": str(out_img_dir),
+    }
+
+
 def main():
     parser = argparse.ArgumentParser(
-        description="General-purpose reusable photobook engine powered by external YAML templates."
+        description="General-purpose reusable photobook engine supporting Mode 1 (T2I) and Mode 2 (VNCCS 3D pose)."
     )
     parser.add_argument(
         "--list-templates",
@@ -190,6 +381,16 @@ def main():
         help="Photobook scene template ID or YAML file path (default: chinese_canopy_bed)",
     )
     parser.add_argument(
+        "--mode",
+        choices=["auto", "t2i", "vnccs"],
+        default="auto",
+        help="Execution mode: 'auto' (vnccs if pose is set, else t2i), 't2i' (force text-to-image), 'vnccs' (force 3D pose studio)",
+    )
+    parser.add_argument(
+        "--char-image",
+        help="Path to reference character image for Mode 2 VNCCS (default: references/src_standing.png)",
+    )
+    parser.add_argument(
         "--export-dir",
         "-e",
         help="Directory to export individual prompt .txt and .params.json files (e.g. photobooks/su_meier)",
@@ -202,7 +403,7 @@ def main():
     parser.add_argument(
         "--run",
         action="store_true",
-        help="Execute generation against ComfyUI via scripts/qwen_pose_test.py",
+        help="Execute generation against ComfyUI",
     )
     parser.add_argument(
         "--dry-run",
@@ -225,13 +426,16 @@ def main():
             try:
                 tdata = yaml.safe_load(tpath.read_text(encoding="utf-8"))
                 name_zh = tdata.get("name_zh", tid)
-                shot_cnt = len(tdata.get("shots", []))
+                shots = tdata.get("shots", [])
+                shot_cnt = len(shots)
+                has_pose = any("pose" in s for s in shots)
+                pose_tag = " [含3D骨骼绑定]" if has_pose else " [纯T2I文本]"
                 desc = tdata.get("description", "")
-                print(f"  • {tid:20s} | {name_zh} ({shot_cnt} 幕分镜)")
+                print(f"  • {tid:24s} | {name_zh} ({shot_cnt} 幕分镜){pose_tag}")
                 if desc:
                     print(f"    说明: {desc}")
             except Exception as e:
-                print(f"  • {tid:20s} (解析失败: {e})")
+                print(f"  • {tid:24s} (解析失败: {e})")
         print("=" * 60)
         print("使用方式: python scripts/run_photobook.py --character <name> --template <template_id>\n")
         return
@@ -239,120 +443,20 @@ def main():
     if not args.character:
         parser.error("必须通过 --character / -c 指定角色卡，或使用 --list-templates 查看可用模板。")
 
-    # 2. Load template YAML
-    template_data = load_template(args.template)
-    template_id = template_data.get("id", Path(args.template).stem)
-    template_name = template_data.get("name_zh", template_id)
-    template_shots = template_data.get("shots", [])
-    default_params = template_data.get("default_params", {})
-
-    if not template_shots:
-        raise ValueError(f"Template '{template_id}' does not contain any 'shots' definition.")
-
-    # 3. Load Character Card
-    char_path = find_character_file(args.character)
-    char_info = parse_character_card(char_path)
-
-    # Blend character params with template default params
-    # Priority: CLI argument > Character card params > Template default params
-    lora = args.lora or char_info.get("lora") or default_params.get("lora", "thesealpacas-nsfw-v2.safetensors")
-    lora_strength = (
-        args.lora_strength
-        if args.lora_strength is not None
-        else char_info.get("lora_strength", default_params.get("lora_strength", 0.85))
+    execute_photobook(
+        character=args.character,
+        template=args.template,
+        mode=args.mode,
+        run=args.run,
+        dry_run=args.dry_run,
+        export_dir=args.export_dir,
+        output_dir=args.output_dir,
+        char_image=args.char_image,
+        seed=args.seed,
+        cfg=args.cfg,
+        lora=args.lora,
+        lora_strength=args.lora_strength,
     )
-    cfg = args.cfg if args.cfg is not None else char_info.get("cfg", default_params.get("cfg", 4.0))
-    seed = args.seed if args.seed is not None else char_info.get("seed", 80964)
-    sampler = char_info.get("sampler") or default_params.get("sampler", "er_sde")
-    scheduler = char_info.get("scheduler") or default_params.get("scheduler", "beta")
-    width = char_info.get("width") or default_params.get("width", 1152)
-    height = char_info.get("height") or default_params.get("height", 1728)
-
-    out_img_dir = Path(args.output_dir or f"outputs/photobooks/{char_info['char_id']}_{template_id}")
-
-    print(f"\n🎭 ========================================================")
-    print(f" 角色写真集引擎: [{char_info['char_name']}] ({char_info['char_id']})")
-    print(f" 套用模板: {template_name} [{template_id}] ({len(template_shots)} 幕分镜)")
-    print(f" 参数基准: Seed={seed}, CFG={cfg}, LoRA={lora}@{lora_strength}")
-    print(f"========================================================\n")
-
-    export_path = Path(args.export_dir) if args.export_dir else None
-    if export_path:
-        export_path.mkdir(parents=True, exist_ok=True)
-        print(f"📁 导出提示词目录: {export_path.resolve()}\n")
-
-    for i, shot in enumerate(template_shots, start=1):
-        # Slot filling: replace {SUBJECT} with character's Section 5 modular block
-        raw_prompt = shot["prompt"]
-        pos_prompt = raw_prompt.replace("{SUBJECT}", char_info["subject_prompt"]).strip()
-        neg_prompt = shot.get("negative") or default_params.get(
-            "negative",
-            "blurry, deformed, bad anatomy, bad hands, plastic skin, cartoon, 3d render, doll, extra limbs, watermark, text"
-        )
-        shot_id = shot["id"]
-        shot_name = shot.get("name_zh", shot_id)
-        shot_type = shot.get("shot_type", "")
-        steps = shot.get("steps", default_params.get("steps", 45))
-
-        print(f"[{i}/{len(template_shots)}] 分镜: {shot_name} ({shot_type})")
-        print(f"    标识: {shot_id}")
-
-        if args.dry_run:
-            print(f"    Positive Prompt:\n    {pos_prompt[:180]}...")
-            print(f"    Negative Prompt:\n    {neg_prompt}\n")
-
-        # Export txt & params.json
-        if export_path:
-            txt_file = export_path / f"{shot_id}.txt"
-            full_txt = f"{pos_prompt}\n\n[negative] {neg_prompt}\n"
-            txt_file.write_text(full_txt, encoding="utf-8")
-
-            param_file = export_path / f"{shot_id}.params.json"
-            param_data = {
-                "steps": steps,
-                "cfg": cfg,
-                "sampler": sampler,
-                "scheduler": scheduler,
-                "seed": seed,
-                "width": width,
-                "height": height,
-                "lora": lora,
-                "lora_strength": lora_strength,
-                "description": f"{char_info['char_name']}写真第{i}幕：{shot_name}",
-            }
-            param_file.write_text(json.dumps(param_data, indent=2, ensure_ascii=False), encoding="utf-8")
-            print(f"    -> 已保存: {txt_file.name} & {param_file.name}")
-
-        # Run ComfyUI execution if requested
-        if args.run:
-            out_img_dir.mkdir(parents=True, exist_ok=True)
-            out_img_file = out_img_dir / f"{shot_id}.png"
-            cmd = [
-                sys.executable,
-                str(_PKG_DIR / "scripts" / "qwen_pose_test.py"),
-                "--mode", "t2i",
-                "--name", f"{char_info['char_id']}_{template_id}_{shot_id}",
-                "--prompt", pos_prompt,
-                "--negative", neg_prompt,
-                "--seed", str(seed),
-                "--steps", str(steps),
-                "--cfg", str(cfg),
-                "--sampler", sampler,
-                "--scheduler", scheduler,
-                "--width", str(width),
-                "--height", str(height),
-                "--lora", lora,
-                "--lora-strength", str(lora_strength),
-                "--out", str(out_img_file),
-            ]
-            print(f"    🚀 正在提交 ComfyUI 推理...")
-            res = subprocess.run(cmd)
-            if res.returncode == 0:
-                print(f"    ✅ 完成: {out_img_file}")
-            else:
-                print(f"    ❌ 失败，返回码: {res.returncode}")
-
-    print("\n✨ 全部处理完毕！")
 
 
 if __name__ == "__main__":

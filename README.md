@@ -112,6 +112,28 @@ python3 scripts/qwen_pose_test.py \
 姿势怎么选（大胆度阶梯 L0–L3、用户要求→姿势族映射表）：见 `SKILL.md` §4，或
 `scripts/run_vnccs_ui.py --list-poses` 列出全部 136 个姿势。
 
+## 写真套图系统 (Photobook Suite)
+
+项目提供了通用的写真套图生成引擎（`scripts/run_photobook.py`），同时支持两种出图控姿方式：
+- **方式 1：T2I 文本高密度生图**（速度快，画质与氛围感最佳，适合常规坐卧站姿）；
+- **方式 2：VNCCS 3D 骨骼精准控姿**（显式读取 `pose_library` 3D 骨骼模型，关节 100% 受控防畸变）。
+
+```bash
+# 1. 查看所有写真模板（自动标注是否含 3D 骨骼绑定）
+python scripts/run_photobook.py --list-templates
+
+# 2. 智能双模运行（模板内有 pose 字段走方式2，其余走方式1）：
+python scripts/run_photobook.py --character ea05_han_minji --template pose3d_studio --run
+
+# 3. 强制切到方式 1 (纯 T2I 文本生图)：
+python scripts/run_photobook.py --character cn19_su_qinghe --template pose3d_studio --mode t2i --run
+
+# 4. 在 Jupyter Notebook 中直接调用：
+# 参见 notebooks/photobook_dual_mode_example.ipynb
+from scripts.run_photobook import execute_photobook
+execute_photobook(character="cn19_su_qinghe", template="pose3d_studio", mode="auto", run=True)
+```
+
 ## 配方要点（摘要）
 
 - `er_sde` + `beta`，CFG 2.5，50 步，1152×1728 竖版

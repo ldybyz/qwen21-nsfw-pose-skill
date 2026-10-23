@@ -44,7 +44,10 @@ except ImportError:
 # ComfyUI-side paths default to $COMFY (or ~/ComfyUI); override individually if needed
 _COMFY = Path(os.environ.get("COMFY") or (Path.home() / "ComfyUI"))
 WF_FILE = Path(os.environ.get("VNCCS_WF_FILE", str(_PKG_DIR / "workflows" / "VNCCS_PoseStudio_QI2.1.json")))
-VNCCS_LIB = Path(os.environ.get("VNCCS_POSELIB", str(_COMFY / "custom_nodes" / "ComfyUI_VNCCS_Utils" / "PoseLibrary")))
+_default_vnccs_lib = _COMFY / "custom_nodes" / "ComfyUI_VNCCS_Utils" / "PoseLibrary"
+if not _default_vnccs_lib.is_dir() and (_PKG_DIR / "pose_library").is_dir():
+    _default_vnccs_lib = _PKG_DIR / "pose_library"
+VNCCS_LIB = Path(os.environ.get("VNCCS_POSELIB", str(_default_vnccs_lib)))
 COMFY_INPUT = Path(os.environ.get("COMFYUI_INPUT", str(_COMFY / "input")))
 COMFY_OUTPUT = Path(os.environ.get("COMFYUI_OUTPUT", str(_COMFY / "output")))
 OUT = Path(os.environ.get("VNCCS_UI_OUT", str(_PKG_DIR / "outputs" / "vnccs_ui")))
@@ -75,7 +78,7 @@ def build_pose_index() -> dict[str, Path]:
     counts: dict[str, int] = {}
     if VNCCS_LIB.is_dir():
         for p in sorted(VNCCS_LIB.rglob("*.json")):
-            s = str(p)
+            s = p.as_posix()
             if "/poses/" not in s and "/local_user_poses/" not in s:
                 continue
             rel = p.relative_to(VNCCS_LIB).parts
@@ -183,6 +186,7 @@ def main() -> int:
     ap.add_argument("--prompt", default="",
                     help="scene prompt for the capture: sets the pose prompt + export.user_prompt (overrides the workflow default)")
     ap.add_argument("--timeout", type=int, default=900)
+    ap.add_argument("--out", default=None, help="output directory for generated images (defaults to outputs/vnccs_ui)")
     ap.add_argument("--list-poses", action="store_true", help="print all available pose names and exit")
     a = ap.parse_args()
 
@@ -207,7 +211,8 @@ def main() -> int:
         print(f"ERROR: {exc}", file=sys.stderr)
         return 2
     tag = _slug(a.pose)  # filesystem-safe tag for output names
-    OUT.mkdir(parents=True, exist_ok=True)
+    out_dir = Path(a.out) if a.out else OUT
+    out_dir.mkdir(parents=True, exist_ok=True)
     COMFY_INPUT.mkdir(parents=True, exist_ok=True)
     char_src = Path(a.char)
     if not char_src.exists():
@@ -284,7 +289,7 @@ def main() -> int:
                 };
             }""")
             print(f"[vnccs-ui] graph: {info}")
-            page.screenshot(path=str(OUT / f"_ui_{tag}_loaded.png"))
+            page.screenshot(path=str(out_dir / f"_ui_{tag}_loaded.png"))
 
             t0 = time.time()
             page.evaluate("() => window.app.queuePrompt()")
@@ -297,7 +302,7 @@ def main() -> int:
                 if got:
                     break
             if not got:
-                page.screenshot(path=str(OUT / f"_ui_{tag}_timeout.png"))
+                page.screenshot(path=str(out_dir / f"_ui_{tag}_timeout.png"))
                 print("[vnccs-ui] TIMEOUT; console tail:")
                 for line in logs[-12:]:
                     print("   ", line)
@@ -305,14 +310,14 @@ def main() -> int:
             settle(page, 2000)
             saved: list[str] = []
             for i, p in enumerate(got, 1):
-                dst = OUT / f"result_{tag}{('' if i == 1 else f'_{i}')}.png"
+                dst = out_dir / f"result_{tag}{('' if i == 1 else f'_{i}')}.png"
                 shutil.copy2(p, dst)
                 saved.append(dst.name)
                 print(f"[vnccs-ui] saved {dst.name} ({p.name})")
-            page.screenshot(path=str(OUT / f"_ui_{tag}_done.png"))
+            page.screenshot(path=str(out_dir / f"_ui_{tag}_done.png"))
         finally:
             page.close()
-    (OUT / f"{tag}_{stamp}.meta.json").write_text(json.dumps({
+    (out_dir / f"{tag}_{stamp}.meta.json").write_text(json.dumps({
         "pose": a.pose, "resolved": str(pose_path), "char": char_name,
         "comfy_prefix": prefix, "seconds": round(time.time() - t0, 1),
         "outputs": saved, "lora": VNCCS_LORA,

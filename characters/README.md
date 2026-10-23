@@ -32,6 +32,7 @@
 | **CN-16** | **邱曼妮** | Qiu Manni | **90s黄金港风** | 邱淑贞（《赌神2》红衣）+ 关之琳 | 港风大波浪卷发 / 烈焰红唇 / 猫系灵动圆杏眼 / 小骨架大胸蜂腰蜜桃臀尤物 | `thesealpacas-nsfw-v2` @ 0.85 | 复古汽车旅馆、暗光酒廊、深夜厨房 | [`cn16_qiu_manni.md`](chinese/cn16_qiu_manni.md) |
 | **CN-17** | **姬无双** | Ji Wushuang | **仙侠修仙小说** | 张雨绮（《妖猫传》春琴）+ 白鹿仙侠 | 红衣似火 / 赤足系金铃 / 额心朱砂魔纹 / 杀伐果断又媚骨天成 / 绝色魔尊 | `femaledVaginus-v1.3` @ 1.0 | 红幔雕花拔步床、幽篁竹林水阁、月下亭台 | [`cn17_ji_wushuang.md`](chinese/cn17_ji_wushuang.md) |
 | **CN-18** | **任楚楚** | Ren Chuchu | **金庸经典武侠** | 许晴（《笑傲江湖》圣姑任盈盈） | 绿竹巷抚琴圣姑 / 两腮动人甜美小梨涡 / 亦正亦邪傲娇美 / 娇羞含情目 | `femaledVaginus-v1.3` @ 1.0 | 绿竹巷幽篁水阁、新中式茶室、江南水阁 | [`cn18_ren_chuchu.md`](chinese/cn18_ren_chuchu.md) |
+| **CN-19** | **苏青荷** | Su Qinghe | **新中式典雅名媛** | 江南世家冷艳名媛与茶道大师 | 及腰瀑布黑直发 / 丹凤杏眼 / 羊脂冷白皮 / 极度柔韧水蛇腰 | `femaledVaginus-v1.3` / `VNCCS` | 3D姿态精准写真、禅意茶室、古典雕花床 | [`cn19_su_qinghe.md`](chinese/cn19_su_qinghe.md) |
 
 ---
 
@@ -43,6 +44,7 @@
 | **EA-02** | **陈悦** | Chen Yue | 都市超模 / 清冷高级御姐 | 26岁 / 175cm 细高挑高骨相 | 侧分利落齐肩黑短发 | `thesealpacas-nsfw-v2` @ 0.8 | 落地窗晨曦、镜前自拍、深夜厨房 | [`chen_yue.md`](east_asian/chen_yue.md) |
 | **EA-03** | **加藤樱** | Sakura Kato | 日系透明感 / 元气纯欲少女 | 20岁 / 娇小玲珑 / 蜜桃曲线 | 微卷亚麻栗棕中长发 | `femaledVaginus-v1.3` @ 1.0 | 私汤温泉、复古旅馆、日系榻榻米 | [`sakura_kato.md`](east_asian/sakura_kato.md) |
 | **EA-04** | **裴智友** | Bae Ji-woo | 韩系轻熟 / 财阀名媛风情 | 25岁 / S型曼妙身材 / 水光美肌 | 蓬松海藻微卷黑曜长发 | `femaledVaginus-v1.3` / `thesealpacas` | 奢华游艇、赛博阳台、普拉提馆 | [`bae_jiwoo.md`](east_asian/bae_jiwoo.md) |
+| **EA-05** | **韩敏智** | Han Minji | 现代都市 / 健美塑形普拉提 | 24岁 / 172cm 健美沙漏 / 水光肌 | 深栗色高马尾 / 微卷长发 | `femaledVaginus-v1.3` / `VNCCS` | 3D姿态精准写真、豪宅落地窗拉伸、画室 | [`ea05_han_minji.md`](east_asian/ea05_han_minji.md) |
 
 ---
 
