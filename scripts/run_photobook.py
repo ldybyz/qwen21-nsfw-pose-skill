@@ -182,6 +182,8 @@ def execute_photobook(
     cfg: Optional[float] = None,
     lora: Optional[str] = None,
     lora_strength: Optional[float] = None,
+    shot_id_filter: Optional[str] = None,
+    timeout: int = 1800,
 ) -> Dict[str, Any]:
     """Execute or export a photobook suite, supporting both Mode 1 (T2I) and Mode 2 (VNCCS 3D Pose).
 
@@ -196,6 +198,12 @@ def execute_photobook(
 
     if not template_shots:
         raise ValueError(f"Template '{template_id}' does not contain any 'shots' definition.")
+
+    if shot_id_filter:
+        filtered = [s for s in template_shots if s["id"] == shot_id_filter or shot_id_filter in s["id"]]
+        if not filtered:
+            raise ValueError(f"Shot '{shot_id_filter}' not found in template '{template_id}'. Available: {[s['id'] for s in template_shots]}")
+        template_shots = filtered
 
     # 2. Load Character Card
     char_path = find_character_file(character)
@@ -307,13 +315,18 @@ def execute_photobook(
                     "--char", str(char_img_path),
                     "--prompt", pos_prompt,
                     "--out", str(out_img_dir),
+                    "--timeout", str(timeout),
                 ]
-                res = subprocess.run(cmd)
+                res = subprocess.run(cmd, env=os.environ)
                 if res.returncode == 0:
                     print(f"    ✅ 完成 3D 姿态出图: {out_img_dir}")
                 else:
-                    print(f"    ⚠️ VNCCS 3D 执行返回码 {res.returncode}，尝试退回方式 1 (T2I) 出图...")
-                    shot_mode = "t2i"
+                    if mode == "vnccs":
+                        print(f"    ❌ VNCCS 3D 执行失败，返回码 {res.returncode}")
+                        shot_mode = None
+                    else:
+                        print(f"    ⚠️ VNCCS 3D 执行返回码 {res.returncode}，尝试退回方式 1 (T2I) 出图...")
+                        shot_mode = "t2i"
 
             if shot_mode == "t2i":
                 out_img_file = out_img_dir / f"{shot_id}.png"
@@ -414,6 +427,8 @@ def main():
     parser.add_argument("--cfg", type=float, help="Override CFG scale")
     parser.add_argument("--lora", type=str, help="Override LoRA filename")
     parser.add_argument("--lora-strength", type=float, help="Override LoRA strength")
+    parser.add_argument("--shot", help="Filter and run only a specific shot ID (e.g. 01_kneeling_leaning_back)")
+    parser.add_argument("--timeout", type=int, default=1800, help="Per-shot timeout in seconds for VNCCS generation (default: 1800)")
 
     args = parser.parse_args()
 
@@ -456,6 +471,8 @@ def main():
         cfg=args.cfg,
         lora=args.lora,
         lora_strength=args.lora_strength,
+        shot_id_filter=args.shot,
+        timeout=args.timeout,
     )
 
 

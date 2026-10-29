@@ -42,7 +42,13 @@ except ImportError:
     sync_playwright = None
 
 # ComfyUI-side paths default to $COMFY (or ~/ComfyUI); override individually if needed
-_COMFY = Path(os.environ.get("COMFY") or (Path.home() / "ComfyUI"))
+def _find_comfy() -> Path:
+    for p in [os.environ.get("COMFY"), "/content/ComfyUI", str(Path.home() / "ComfyUI"), "/root/ComfyUI"]:
+        if p and (Path(p) / "main.py").exists():
+            return Path(p)
+    return Path("/content/ComfyUI") if Path("/content").exists() else (Path.home() / "ComfyUI")
+
+_COMFY = _find_comfy()
 WF_FILE = Path(os.environ.get("VNCCS_WF_FILE", str(_PKG_DIR / "workflows" / "VNCCS_PoseStudio_QI2.1.json")))
 _default_vnccs_lib = _COMFY / "custom_nodes" / "ComfyUI_VNCCS_Utils" / "PoseLibrary"
 if not _default_vnccs_lib.is_dir() and (_PKG_DIR / "pose_library").is_dir():
@@ -158,12 +164,20 @@ def prep_workflow(pose_json: str, char_name: str, prefix: str, user_prompt: str 
 
 def find_new_outputs(prefix: str, since: float) -> list[Path]:
     hits = []
-    for p in COMFY_OUTPUT.rglob(f"{prefix}*.png"):
-        try:
-            if p.stat().st_mtime >= since - 1:
-                hits.append(p)
-        except OSError:
-            pass
+    seen = set()
+    search_dirs = [COMFY_OUTPUT, _COMFY / "output", Path("/content/ComfyUI/output"), Path("/root/ComfyUI/output")]
+    for sdir in search_dirs:
+        if not sdir.exists():
+            continue
+        for p in sdir.rglob(f"{prefix}*.png"):
+            if p in seen:
+                continue
+            seen.add(p)
+            try:
+                if p.stat().st_mtime >= since - 1:
+                    hits.append(p)
+            except OSError:
+                pass
     return sorted(hits)
 
 
@@ -185,7 +199,7 @@ def main() -> int:
     ap.add_argument("--char", default=str(_PKG_DIR / "references" / "src_standing.png"))
     ap.add_argument("--prompt", default="",
                     help="scene prompt for the capture: sets the pose prompt + export.user_prompt (overrides the workflow default)")
-    ap.add_argument("--timeout", type=int, default=900)
+    ap.add_argument("--timeout", type=int, default=1800)
     ap.add_argument("--out", default=None, help="output directory for generated images (defaults to outputs/vnccs_ui)")
     ap.add_argument("--list-poses", action="store_true", help="print all available pose names and exit")
     a = ap.parse_args()
@@ -213,13 +227,18 @@ def main() -> int:
     tag = _slug(a.pose)  # filesystem-safe tag for output names
     out_dir = Path(a.out) if a.out else OUT
     out_dir.mkdir(parents=True, exist_ok=True)
-    COMFY_INPUT.mkdir(parents=True, exist_ok=True)
     char_src = Path(a.char)
     if not char_src.exists():
         print(f"ERROR: character not found: {char_src}", file=sys.stderr)
         return 1
     char_name = char_src.name
-    shutil.copy2(char_src, COMFY_INPUT / char_name)
+    # Copy to all potential ComfyUI input locations
+    for inp in [COMFY_INPUT, _COMFY / "input", Path("/content/ComfyUI/input"), Path("/root/ComfyUI/input")]:
+        try:
+            inp.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(char_src, inp / char_name)
+        except Exception:
+            pass
 
     pose_json = pose_path.read_text(encoding="utf-8")
     # unique prefix per run — never clobber a previous result
