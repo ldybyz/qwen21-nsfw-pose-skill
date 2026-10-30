@@ -107,7 +107,23 @@ def setup_comfyui(a: argparse.Namespace) -> Path:
     marker = comfy / ".deps_installed"
     if not (comfy / "main.py").exists():
         log("cloning ComfyUI ...")
-        run(["git", "clone", "-q", "https://github.com/comfyanonymous/ComfyUI.git", str(comfy)])
+        if (comfy / ".git").is_dir():
+            try:
+                run(["git", "-C", str(comfy), "fetch", "--all", "-q"])
+                run(["git", "-C", str(comfy), "checkout", "-q", "-f", "master"])
+            except Exception:
+                shutil.rmtree(comfy / ".git", ignore_errors=True)
+        if not (comfy / "main.py").exists():
+            if comfy.exists() and any(comfy.iterdir()):
+                # Target directory already exists and contains files/folders (e.g. custom_nodes, input)
+                # Clone into a temp directory and merge into comfy so pre-created assets are preserved
+                import tempfile
+                with tempfile.TemporaryDirectory(dir=comfy.parent if comfy.parent.exists() else None) as tmp_dir:
+                    tmp_comfy = Path(tmp_dir) / "ComfyUI"
+                    run(["git", "clone", "-q", "https://github.com/comfyanonymous/ComfyUI.git", str(tmp_comfy)])
+                    shutil.copytree(tmp_comfy, comfy, dirs_exist_ok=True)
+            else:
+                run(["git", "clone", "-q", "https://github.com/comfyanonymous/ComfyUI.git", str(comfy)])
         marker.unlink(missing_ok=True)
     elif a.update:
         log("updating ComfyUI ...")
