@@ -237,8 +237,9 @@ def generate(a: argparse.Namespace, comfy: Path, drive: Path | None, env: dict) 
     prompt = load_prompt(a)
     stamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
     prefix = "colab_edit" if a.mode == "edit" else "colab"
-    out = PKG_DIR / "outputs" / f"{prefix}_{stamp}.png"
-    out.parent.mkdir(parents=True, exist_ok=True)
+    out_dir = (drive / "outputs") if drive is not None else (PKG_DIR / "outputs")
+    out_dir.mkdir(parents=True, exist_ok=True)
+    out = out_dir / f"{prefix}_{stamp}.png"
     cmd = [sys.executable, str(PKG_DIR / "scripts" / "qwen_pose_test.py"),
            "--mode", a.mode, "--name", prefix, "--prompt", prompt,
            "--seed", str(a.seed), "--steps", str(a.steps), "--cfg", str(a.cfg),
@@ -260,11 +261,16 @@ def generate(a: argparse.Namespace, comfy: Path, drive: Path | None, env: dict) 
     if r.returncode != 0 or not out.exists():
         die(f"generation failed. ComfyUI log tail:\n{tail(comfy / 'comfy.log')}")
     if drive is not None:
-        shutil.copy(out, drive / "outputs")
-        meta = out.with_suffix(out.suffix + ".json")
-        if meta.exists():
-            shutil.copy(meta, drive / "outputs")
-        log(f"saved to Drive: {drive / 'outputs' / out.name}")
+        log(f"saved directly to Drive: {out}")
+        try:
+            local_dir = PKG_DIR / "outputs"
+            local_dir.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(out, local_dir / out.name)
+            meta = out.with_suffix(out.suffix + ".json")
+            if meta.exists():
+                shutil.copy2(meta, local_dir / meta.name)
+        except Exception:
+            pass
     return out
 
 

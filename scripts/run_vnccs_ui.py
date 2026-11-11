@@ -14,6 +14,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import re
 import shutil
 import sys
 import time
@@ -56,7 +57,18 @@ if not _default_vnccs_lib.is_dir() and (_PKG_DIR / "pose_library").is_dir():
 VNCCS_LIB = Path(os.environ.get("VNCCS_POSELIB", str(_default_vnccs_lib)))
 COMFY_INPUT = Path(os.environ.get("COMFYUI_INPUT", str(_COMFY / "input")))
 COMFY_OUTPUT = Path(os.environ.get("COMFYUI_OUTPUT", str(_COMFY / "output")))
-OUT = Path(os.environ.get("VNCCS_UI_OUT", str(_PKG_DIR / "outputs" / "vnccs_ui")))
+def _get_default_out() -> Path:
+    env_out = os.environ.get("VNCCS_UI_OUT")
+    if env_out:
+        return Path(env_out)
+    drive_root = os.environ.get("DRIVE_ROOT")
+    if not drive_root and Path("/content/drive/MyDrive").is_dir():
+        drive_root = "/content/drive/MyDrive/qwen21_pose"
+    if drive_root:
+        return Path(drive_root) / "outputs" / "vnccs_ui"
+    return _PKG_DIR / "outputs" / "vnccs_ui"
+
+OUT = _get_default_out()
 VNCCS_LORA = "VNCCS_QI2_PoseStudioV1.1.safetensors"
 URL = os.environ.get("COMFYUI_URL", "http://127.0.0.1:8188")
 
@@ -70,11 +82,31 @@ LEGACY = {
 
 
 def _slug(s: str) -> str:
-    return "_".join("".join(ch if ch.isalnum() else " " for ch in s.lower()).split())
+    # Strip leading shot index if present (e.g. '05_bent_toe_touch' -> 'bent_toe_touch')
+    cleaned = re.sub(r"^\d+_", "", s.strip())
+    return "_".join("".join(ch if ch.isalnum() else " " for ch in cleaned.lower()).split())
+
+
+def sync_local_poses_to_comfy(target_lib: Path) -> None:
+    """Ensure repo's 55 curated poses exist in ComfyUI PoseLibrary/local_user_poses."""
+    src = _PKG_DIR / "pose_library" / "local_user_poses"
+    if not src.is_dir() or not target_lib.is_dir():
+        return
+    dst = target_lib / "local_user_poses"
+    try:
+        dst.mkdir(parents=True, exist_ok=True)
+        for item in src.rglob("*.json"):
+            rel = item.relative_to(src)
+            target = dst / rel
+            target.parent.mkdir(parents=True, exist_ok=True)
+            if not target.exists() or item.stat().st_size != target.stat().st_size:
+                shutil.copy2(item, target)
+    except Exception:
+        pass
 
 
 def build_pose_index() -> dict[str, Path]:
-    """Index every pose JSON shipped in the VNCCS PoseLibrary (136 as of 2026-10-12).
+    """Index every pose JSON across repository bundled poses and VNCCS PoseLibrary.
 
     Keys: "<repo_slug>/<category_slug>/<pose_slug>" for every pose, plus a bare
     "<pose_slug>" alias when that name is unique across the library (9 pose names
@@ -82,23 +114,52 @@ def build_pose_index() -> dict[str, Path]:
     """
     idx: dict[str, Path] = {}
     counts: dict[str, int] = {}
-    if VNCCS_LIB.is_dir():
-        for p in sorted(VNCCS_LIB.rglob("*.json")):
+
+    # Auto-sync local poses to ComfyUI's VNCCS directory if available
+    comfy_lib = _COMFY / "custom_nodes" / "ComfyUI_VNCCS_Utils" / "PoseLibrary"
+    if comfy_lib.is_dir():
+        sync_local_poses_to_comfy(comfy_lib)
+    if VNCCS_LIB.is_dir() and VNCCS_LIB.resolve() != comfy_lib.resolve():
+        sync_local_poses_to_comfy(VNCCS_LIB)
+
+    search_dirs: list[Path] = []
+    # 1. Package bundled poses (always available, 55 curated poses)
+    pkg_lib = _PKG_DIR / "pose_library"
+    if pkg_lib.is_dir():
+        search_dirs.append(pkg_lib)
+
+    # 2. ComfyUI custom node pose library (remote repos + custom user poses)
+    if comfy_lib.is_dir() and not any(d.resolve() == comfy_lib.resolve() for d in search_dirs):
+        search_dirs.append(comfy_lib)
+
+    # 3. Environment or custom VNCCS_POSELIB
+    if VNCCS_LIB.is_dir() and not any(d.resolve() == VNCCS_LIB.resolve() for d in search_dirs):
+        search_dirs.append(VNCCS_LIB)
+
+    for lib_dir in search_dirs:
+        for p in sorted(lib_dir.rglob("*.json")):
             s = p.as_posix()
             if "/poses/" not in s and "/local_user_poses/" not in s:
                 continue
-            rel = p.relative_to(VNCCS_LIB).parts
+            try:
+                rel = p.relative_to(lib_dir).parts
+            except ValueError:
+                continue
             repo, category, name = _slug(rel[0]), _slug(rel[1]), _slug(p.stem)
             if category == "poses":  # local_user_poses nests one level shallower
                 category = _slug(rel[2])
-            idx[f"{repo}/{category}/{name}"] = p
-            counts[name] = counts.get(name, 0) + 1
+            key = f"{repo}/{category}/{name}"
+            if key not in idx:
+                idx[key] = p
+                counts[name] = counts.get(name, 0) + 1
+
     for key, path in list(idx.items()):
         if key.count("/") != 2:
             continue
         name = key.rsplit("/", 1)[1]
         if counts.get(name) == 1:
             idx[name] = path
+
     for alias, stem in LEGACY.items():
         for key, path in idx.items():
             if key.count("/") == 2 and key.rsplit("/", 1)[1] == _slug(stem):
@@ -117,7 +178,17 @@ def resolve_pose(name: str, idx: dict[str, Path]) -> Path:
     if len(hits) == 1:
         return hits[0]
     if not hits:
-        raise KeyError(f"unknown pose '{name}' — run with --list-poses to see the {len(idx)} available poses")
+        # Token-based subset matching (e.g. "bent toe touch" -> "bent over toe touch profile")
+        tokens = set(key.split("_"))
+        token_hits = sorted({
+            p for k, p in idx.items()
+            if tokens.issubset(set((k.rsplit("/", 1)[1] if "/" in k else k).split("_")))
+        })
+        if len(token_hits) == 1:
+            return token_hits[0]
+        if not token_hits:
+            raise KeyError(f"unknown pose '{name}' — run with --list-poses to see the {len(idx)} available poses")
+        hits = token_hits
     raise KeyError(f"pose '{name}' is ambiguous: {[p.stem for p in hits][:6]} — disambiguate with <repo>/<category>/<name>")
 
 
@@ -200,7 +271,7 @@ def main() -> int:
     ap.add_argument("--prompt", default="",
                     help="scene prompt for the capture: sets the pose prompt + export.user_prompt (overrides the workflow default)")
     ap.add_argument("--timeout", type=int, default=1800)
-    ap.add_argument("--out", default=None, help="output directory for generated images (defaults to outputs/vnccs_ui)")
+    ap.add_argument("--out", default=None, help=f"output directory for generated images (defaults to {OUT})")
     ap.add_argument("--list-poses", action="store_true", help="print all available pose names and exit")
     a = ap.parse_args()
 
@@ -358,6 +429,21 @@ def main() -> int:
                 shutil.copy2(p, dst)
                 saved.append(dst.name)
                 print(f"[vnccs-ui] saved {dst.name} ({p.name})")
+
+            # Also capture the pose figure (doll) saved by LiteGraph
+            doll_prefix = f"poselab/vnccs_ui_doll_{tag}_{stamp}"
+            doll_got = find_new_outputs(doll_prefix, t0)
+            if not doll_got:
+                doll_got = find_new_outputs(f"vnccs_ui_doll_{tag}_{stamp}", t0)
+            for i, p in enumerate(doll_got, 1):
+                dst_doll = out_dir / f"doll_{tag}{('' if i == 1 else f'_{i}')}.png"
+                try:
+                    shutil.copy2(p, dst_doll)
+                    saved.append(dst_doll.name)
+                    print(f"[vnccs-ui] saved pose doll: {dst_doll.name} ({p.name})")
+                except Exception as e:
+                    print(f"[vnccs-ui] could not copy pose doll: {e}", file=sys.stderr)
+
             page.screenshot(path=str(out_dir / f"_ui_{tag}_done.png"))
         finally:
             page.close()
@@ -366,6 +452,24 @@ def main() -> int:
         "comfy_prefix": prefix, "seconds": round(time.time() - t0, 1),
         "outputs": saved, "lora": VNCCS_LORA,
     }, ensure_ascii=False, indent=2), encoding="utf-8")
+
+    # Auto-sync to Google Drive if standalone run
+    drive_root = os.environ.get("DRIVE_ROOT")
+    if not drive_root and Path("/content/drive/MyDrive").is_dir():
+        drive_root = "/content/drive/MyDrive/qwen21_pose"
+    if drive_root:
+        try:
+            drive_dst = Path(drive_root) / "outputs" / "vnccs_ui"
+            if not str(out_dir.resolve()).startswith(str(Path(drive_root).resolve())):
+                drive_dst.mkdir(parents=True, exist_ok=True)
+                for f_name in saved + [f"{tag}_{stamp}.meta.json", f"_ui_{tag}_done.png"]:
+                    src_f = out_dir / f_name
+                    if src_f.exists():
+                        shutil.copy2(src_f, drive_dst / src_f.name)
+                print(f"[vnccs-ui] 💾 已自动同步至 Google Drive: {drive_dst}")
+        except Exception as e:
+            print(f"[vnccs-ui] drive sync warning: {e}", file=sys.stderr)
+
     print("[vnccs-ui] done")
     return 0
 
